@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import ModuleMenu from "@/components/ModuleMenu";
+import MenuSidebar from "@/components/MenuSidebar";
 
 export default function DashboardLayout({
   children,
@@ -8,22 +8,29 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="h-screen flex">
-      {/* LEFT - MODULE MENU SIDEBAR */}
-      <div className="w-1/5 md:w-[8%] lg:w-[16%] xl:w-1/5 p-4 flex flex-col">
+    <div className="flex h-screen">
+      {/* ------------------- LEFT - MODULE MENU SIDEBAR ------------------- */}
+      <div className="flex max-w-[230px] flex-col bg-gradient-to-b from-gray-800 to-gray-900 p-4 text-slate-50 md:w-[8%] lg:w-[22%]">
         <Link
           href="/"
-          className="flex items-center justify-center lg:justify-start gap-1"
+          className="flex items-center justify-center gap-2 rounded-xl p-2 lg:justify-start"
         >
-          <Image src="/logo.png" alt="logo" width={32} height={32} />
-          <span className="hidden lg:block">LifeDashboard</span>
+          <Image
+            src="/logo.png"
+            alt="logo"
+            width={34}
+            height={34}
+            className="rounded-lg"
+          />
+          <span className="hidden text-lg font-semibold lg:block">
+            LifeDashboard
+          </span>
         </Link>
-        <ModuleMenu />
+        <MenuSidebar />
       </div>
-      {/* RIGHT - MAIN MODULE PAGE */}
-      <div className="w-4/5 md:w-[92%] lg:w-[84%] xl:w-4/5 overflow-scroll">
-        {children}
-      </div>
+
+      {/* ------------------- RIGHT - MAIN MODULE PAGE ------------------- */}
+      <div className="flex-grow p-4">{children}</div>
     </div>
   );
 }

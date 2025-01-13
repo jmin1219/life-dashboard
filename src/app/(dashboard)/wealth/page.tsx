@@ -1,5 +1,15 @@
+import ModuleNavbar from "@/components/ModuleNavbar";
+
 const WealthPage = () => {
-  return <div className="">WealthPage</div>;
+  const wealthNavItems = [
+    { name: "Overview", path: "/wealth" },
+    { name: "Transactions", path: "/wealth/transactions" },
+  ];
+  return (
+    <div className="flex">
+      <ModuleNavbar navItems={wealthNavItems} />
+    </div>
+  );
 };
 
 export default WealthPage;
