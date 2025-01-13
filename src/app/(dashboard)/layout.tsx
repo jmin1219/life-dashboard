@@ -10,7 +10,7 @@ export default function DashboardLayout({
   return (
     <div className="flex h-screen">
       {/* ------------------- LEFT - MODULE MENU SIDEBAR ------------------- */}
-      <div className="flex max-w-[230px] flex-col bg-gradient-to-b from-gray-800 to-gray-900 p-4 text-slate-50 md:w-[8%] lg:w-[22%]">
+      <div className="flex min-w-[82px] max-w-[230px] flex-col bg-gradient-to-b from-gray-800 to-gray-900 p-4 text-slate-50 md:w-[8%] lg:w-[22%]">
         <Link
           href="/"
           className="flex items-center justify-center gap-2 rounded-xl p-2 lg:justify-start"
