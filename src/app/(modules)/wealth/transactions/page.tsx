@@ -2,9 +2,9 @@
 
 import DatePicker from "./components/DatePicker";
 import { Separator } from "@/components/ui/separator";
-import TransactionBarChart from "./components/BarChart";
+import TransactionBarChart from "./components/TransactionBarChart";
 import TransactionTable from "./components/TransactionTable";
-import PieChart from "./components/PieChart";
+import TransactionPieCharts from "./components/TransactionPieChart";
 import FiltersMenu from "./components/FiltersMenu";
 import AddTransactionModal from "./components/AddTransactionModal";
 
@@ -27,10 +27,12 @@ const TransactionsTab = () => {
       <Separator className="my-2" />
       {/* ------------------------ ROW 4 - TABLE & PIE CHART ------------------------ */}
       <div className="flex h-full flex-col lg:flex-row">
-        <div className="w-1/4">
-          <PieChart />
+        <div className="flex w-1/4 flex-col">
+          <span className="text-muted-foreground">TOTAL EXPENSES</span>
+          <span className="text-2xl font-semibold">₩ 15,550,320</span>
+          <TransactionPieCharts />
         </div>
-        <Separator orientation="vertical" />
+        <Separator orientation="vertical" className="mx-2" />
         <div className="w-3/4">
           <TransactionTable />
         </div>

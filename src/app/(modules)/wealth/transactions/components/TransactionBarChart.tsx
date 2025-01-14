@@ -5,7 +5,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Bar, BarChart, XAxis, CartesianGrid, YAxis } from "recharts";
-import { Card, CardContent } from "@/components/ui/card";
 
 const sampleData = [
   { month: "January", credit: 2500, debit: 1800 },
