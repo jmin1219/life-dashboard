@@ -8,9 +8,9 @@ const WealthLayout = ({ children }: { children: React.ReactNode }) => {
     { name: "Investments", path: "/wealth/investments" },
   ];
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex h-full w-full flex-col lg:overflow-hidden">
       <ModuleNavbar navItems={wealthNavItems} />
-      <main className="h-full w-full">{children}</main>
+      <main className="">{children}</main>
     </div>
   );
 };
