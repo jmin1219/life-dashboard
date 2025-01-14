@@ -1,5 +1,5 @@
 const TransactionsTab = () => {
-  return <div className="">TransactionsTab</div>;
+  return <div className="bg-white">TransactionsTab</div>;
 };
 
 export default TransactionsTab;

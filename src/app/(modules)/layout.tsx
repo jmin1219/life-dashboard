@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import MenuSidebar from "@/components/MenuSidebar";
 
-export default function DashboardLayout({
+export default function ModulesLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
