@@ -10,12 +10,18 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { CirclePlus as AddIcon } from "lucide-react";
 
 const AddTransactionModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Add Transaction</Button>
+        <div className="flex items-center justify-center rounded-xl border border-slate-600 p-0.5">
+          <Button variant="ghost" className="m-0.5 rounded-[8px] text-lg">
+            <AddIcon />
+            <span className="hidden lg:block">Add Transaction</span>
+          </Button>
+        </div>
       </DialogTrigger>
       <DialogContent className="">
         <DialogHeader>
@@ -27,24 +33,22 @@ const AddTransactionModal = () => {
         {/* TODO: Edit add transaction form input data */}
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+            <Label htmlFor="type" className="text-right">
+              Type
             </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
+            <Input id="type" defaultValue="Expense" className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
+            <Label htmlFor="desc" className="text-right">
+              Description
             </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
+            <Input id="desc" defaultValue="12000" className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="amount" className="text-right">
+              Amount
+            </Label>
+            <Input id="amount" defaultValue="12000" className="col-span-3" />
           </div>
         </div>
         <DialogFooter>

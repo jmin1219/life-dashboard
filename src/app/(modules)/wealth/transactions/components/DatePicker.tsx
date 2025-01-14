@@ -15,15 +15,17 @@ const DatePicker = () => {
   const [date, setDate] = useState<Date>();
 
   return (
-    <div className="flex items-center justify-center rounded-2xl border border-white p-1">
-      <Button variant="ghost" className="rounded-l-xl">
+    <div className="flex items-center justify-center rounded-xl border border-slate-600 p-1">
+      <Button variant="ghost" className="rounded-l-[8px]">
         <LeftIcon />
       </Button>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className="rounded-l-lg px-24 text-lg">
+          <Button variant="ghost" className="text-lg lg:px-24">
             <CalendarIcon />
-            {date ? format(date, "PPP") : <span>Pick a date</span>}
+            <span className="hidden lg:block">
+              {date ? format(date, "PPP") : "Pick a date"}
+            </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
@@ -37,7 +39,7 @@ const DatePicker = () => {
           />
         </PopoverContent>
       </Popover>
-      <Button variant="ghost" className="rounded-r-xl">
+      <Button variant="ghost" className="rounded-r-[8px]">
         <RightIcon />
       </Button>
     </div>

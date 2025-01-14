@@ -12,7 +12,7 @@ const TransactionsTab = () => {
   return (
     <div className="flex h-full w-full flex-col">
       {/* ------------------------ ROW 1 - DATE PICKER, & ADD TRANSACTION BUTTON ------------------------ */}
-      <div className="mx-20 flex justify-between">
+      <div className="mx-[10%] flex justify-between">
         <DatePicker />
         <AddTransactionModal />
       </div>
