@@ -13,7 +13,7 @@ import {
 
 const FiltersMenu = () => {
   return (
-    <div className="flex items-center gap-5">
+    <div className="flex items-center justify-center gap-5">
       <span className="text-sm text-muted-foreground">FILTERS:</span>
       <Menubar className="flex gap-3 rounded-[8px] border-0">
         {/* ---------------- CATEGORY FILTER (Multi-select) ---------------- */}
