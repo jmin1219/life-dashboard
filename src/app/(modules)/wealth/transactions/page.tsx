@@ -18,7 +18,9 @@ const TransactionsTab = () => {
       </div>
       <Separator className="my-3" />
       {/* ------------------------ ROW 2 - FILTERS ------------------------ */}
-      <FiltersMenu />
+      <div className="mx-[5%]">
+        <FiltersMenu />
+      </div>
       <Separator className="my-3" />
       {/* ------------------------ ROW 3 - BAR CHART ------------------------ */}
       <BarChart />
