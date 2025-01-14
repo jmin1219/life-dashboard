@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  CircleDollarSign,
-  CircleUser,
-  Dumbbell,
-  LogOut,
-  Settings,
-  Sunrise,
+  CircleDollarSign as WealthIcon,
+  CircleUser as ProfileIcon,
+  Dumbbell as HealthIcon,
+  LogOut as LogOutIcon,
+  Settings as SettingsIcon,
+  Sunrise as ProductivityIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,17 +16,17 @@ const menuItems = [
     group: "MODULES",
     items: [
       {
-        icon: <Sunrise />,
+        icon: <ProductivityIcon />,
         label: "Productivity",
         href: "/productivity",
       },
       {
-        icon: <CircleDollarSign />,
+        icon: <WealthIcon />,
         label: "Wealth",
         href: "/wealth",
       },
       {
-        icon: <Dumbbell />,
+        icon: <HealthIcon />,
         label: "Health",
         href: "/health",
       },
@@ -36,17 +36,17 @@ const menuItems = [
     group: "OTHER",
     items: [
       {
-        icon: <CircleUser />,
+        icon: <ProfileIcon />,
         label: "Profile",
         href: "/profile",
       },
       {
-        icon: <Settings />,
+        icon: <SettingsIcon />,
         label: "Settings",
         href: "/settings",
       },
       {
-        icon: <LogOut />,
+        icon: <LogOutIcon />,
         label: "Logout",
         href: "/logout",
       },

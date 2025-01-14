@@ -21,7 +21,7 @@ const ModuleNavbar: React.FC<NavbarProps> = ({ navItems }) => {
   const pathname = usePathname();
 
   return (
-    <div className="flex w-full items-center justify-center">
+    <div className="mb-3 flex w-full items-center justify-center">
       <NavigationMenu className="rounded-full bg-slate-700 px-1.5 py-1">
         <NavigationMenuList className="flex space-x-3">
           {navItems.map((item) => (
