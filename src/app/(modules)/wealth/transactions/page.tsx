@@ -7,8 +7,13 @@ import TransactionTable from "./components/TransactionTable";
 import TransactionPieCharts from "./components/TransactionPieChart";
 import FiltersMenu from "./components/FiltersMenu";
 import AddTransactionModal from "./components/AddTransactionModal";
+import { TransactionType } from "@/models/types";
 
-const TransactionsTab = () => {
+const TransactionsTab = ({
+  transactions,
+}: {
+  transactions: TransactionType[];
+}) => {
   return (
     <div className="flex h-full flex-col">
       {/* ------------------------ ROW 1 - DATE PICKER, & ADD TRANSACTION BUTTON ------------------------ */}
@@ -29,13 +34,13 @@ const TransactionsTab = () => {
       <div className="flex flex-col lg:flex-row">
         <div className="flex h-auto w-1/4 flex-col">
           <span className="text-muted-foreground">TOTAL EXPENSES</span>
-          <span className="text-2xl font-semibold">₩ 15,550,320</span>
-          <TransactionPieCharts />
+          <span className="text-2xl font-semibold">₩ Add Amount Total</span>
+          <TransactionPieCharts transactions={transactions} />
         </div>
         <Separator orientation="vertical" className="mx-2" />
         <div className="w-3/4 flex-grow flex-col">
           <div className="overflow-y-auto">
-            <TransactionTable />
+            <TransactionTable transactions={transactions} />
           </div>
         </div>
       </div>

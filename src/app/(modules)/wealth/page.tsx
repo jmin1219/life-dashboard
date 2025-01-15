@@ -1,6 +1,6 @@
 import WealthOverviewTab from "./overview/page";
 
-const WealthPage = () => {
+const WealthPage = async () => {
   return <WealthOverviewTab />;
 };
 

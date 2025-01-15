@@ -5,6 +5,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Pie, PieChart } from "recharts";
+import { TransactionType } from "@/models/types";
 
 const sampleData = [
   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
@@ -39,7 +40,11 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const TransactionPieCharts = () => {
+const TransactionPieCharts = ({
+  transactions,
+}: {
+  transactions: TransactionType[];
+}) => {
   return (
     <div className="">
       {/* ---------------- TOP CHART: BY CATEGORY ---------------- */}
