@@ -31,7 +31,7 @@ const TransactionTable = ({
       </TableHeader>
       <TableBody>
         {transactions.map((transaction) => (
-          <TableRow key={transaction._id}>
+          <TableRow key={transaction.id}>
             <TableCell>{transaction.date}</TableCell>
             <TableCell>₩ {transaction.description}</TableCell>
             <TableCell>{transaction.category}</TableCell>

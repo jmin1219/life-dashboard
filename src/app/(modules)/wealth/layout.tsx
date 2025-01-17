@@ -1,6 +1,6 @@
 import React from "react";
 import ModuleNavbar from "@/components/ModuleNavbar";
-import { fetchTransactions } from "@/lib/data";
+import { fetchTransactions } from "@/lib/api";
 import { TransactionType } from "@/models/types";
 
 const WealthLayout = async ({
@@ -15,13 +15,13 @@ const WealthLayout = async ({
     { name: "Investments", path: "/wealth/investments" },
   ];
 
-  const transactions = await fetchTransactions();
-  console.log("Fetched transactions:", transactions);
+  const transactions: TransactionType[] = await fetchTransactions();
+  console.log("✅ WealthLayout fetched transactions", transactions);
 
   return (
     <div className="flex h-full w-full flex-col lg:overflow-hidden">
       <ModuleNavbar navItems={wealthNavItems} />
-      <main className="">{React.cloneElement(children, { transactions })}</main>
+      <main>{React.cloneElement(children, { transactions })}</main>
     </div>
   );
 };

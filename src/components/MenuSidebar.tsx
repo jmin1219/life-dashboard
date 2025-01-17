@@ -56,7 +56,7 @@ const menuItems = [
 
 const MenuSidebar = () => {
   const pathname = usePathname();
-
+  // TODO: Add current date between logo and modules
   return (
     <div className="mb-12 mt-10 flex h-full flex-col justify-between">
       {menuItems.map((group) => (

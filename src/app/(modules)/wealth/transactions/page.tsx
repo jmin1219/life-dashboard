@@ -14,6 +14,8 @@ const TransactionsTab = ({
 }: {
   transactions: TransactionType[];
 }) => {
+  console.log("✅ TransactionsTab fetched transactions", transactions);
+
   return (
     <div className="flex h-full flex-col">
       {/* ------------------------ ROW 1 - DATE PICKER, & ADD TRANSACTION BUTTON ------------------------ */}

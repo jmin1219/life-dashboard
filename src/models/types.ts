@@ -1,10 +1,10 @@
 export interface TransactionType {
-  _id: string;
-  date: string; // ISO date string from MongoDB
+  id?: number;
+  date: string;
   amount: number;
   method: string;
   category: string;
-  description: string;
+  description?: string;
   details?: string;
-  processed: boolean;
+  processed?: boolean;
 }
