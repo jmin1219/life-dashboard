@@ -7,14 +7,15 @@ import TransactionTable from "./components/TransactionTable";
 import TransactionPieCharts from "./components/TransactionPieChart";
 import FiltersMenu from "./components/FiltersMenu";
 import AddTransactionModal from "./components/AddTransactionModal";
-import { TransactionType } from "@/models/types";
+import { useTransactions } from "@/context/TransactionsContext";
 
-const TransactionsTab = ({
-  transactions,
-}: {
-  transactions: TransactionType[];
-}) => {
-  console.log("✅ TransactionsTab fetched transactions", transactions);
+const TransactionsTab = () => {
+  const { transactions } = useTransactions();
+
+  const totalExpenses = transactions.reduce(
+    (sum, transaction) => sum + transaction.amount,
+    0,
+  );
 
   return (
     <div className="flex h-full flex-col">
@@ -36,7 +37,7 @@ const TransactionsTab = ({
       <div className="flex flex-col lg:flex-row">
         <div className="flex h-auto w-1/4 flex-col">
           <span className="text-muted-foreground">TOTAL EXPENSES</span>
-          <span className="text-2xl font-semibold">₩ Add Amount Total</span>
+          <span className="text-2xl font-semibold">₩ {totalExpenses}</span>
           <TransactionPieCharts transactions={transactions} />
         </div>
         <Separator orientation="vertical" className="mx-2" />

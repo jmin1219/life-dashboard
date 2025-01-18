@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableHeader,
@@ -21,6 +23,7 @@ const TransactionTable = ({
     <Table>
       <TableHeader>
         <TableRow>
+          {/* TODO: Click column name to sort */}
           <TableHead className="text-muted-foreground">DATE</TableHead>
           <TableHead className="text-muted-foreground">NAME</TableHead>
           <TableHead className="text-muted-foreground">CATEGORY</TableHead>
@@ -33,10 +36,12 @@ const TransactionTable = ({
         {transactions.map((transaction) => (
           <TableRow key={transaction.id}>
             <TableCell>{transaction.date}</TableCell>
-            <TableCell>₩ {transaction.description}</TableCell>
+            <TableCell>{transaction.description}</TableCell>
+            {/* TODO: give category color and outline shape */}
             <TableCell>{transaction.category}</TableCell>
-            <TableCell>{transaction.amount}</TableCell>
+            <TableCell>₩ {transaction.amount}</TableCell>
             <TableCell>{transaction.method}</TableCell>
+            {/* TODO: use checkbox and automatically update database when clicked. */}
             <TableCell>{transaction.processed ? "Yes" : "No"}</TableCell>
           </TableRow>
         ))}

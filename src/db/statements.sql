@@ -13,6 +13,7 @@ CREATE INDEX idx_transactions_date ON transactions(date);
 CREATE INDEX idx_transactions_category ON transactions(category);
 CREATE INDEX idx_transactions_processed ON transactions(processed);
 
+-- ------------------ MOCK DATA ------------------
 -- Groceries
 INSERT INTO transactions (date, amount, method, category, description, details, processed)
 VALUES
@@ -40,3 +41,5 @@ VALUES
 ('2025-01-09', 15.00, 'Credit Card', 'Entertainment', 'Movie ticket', 'Watched Avatar 3', TRUE),
 ('2025-01-17', 30.00, 'Debit Card', 'Entertainment', 'Concert ticket', 'Attended a local band performance', TRUE),
 ('2025-01-23', 10.00, 'Cash', 'Entertainment', 'Arcade games', 'Played games at an arcade', FALSE);
+
+
