@@ -3,12 +3,30 @@ import { TransactionType } from "@/models/types";
 // TODO: Change baseurl
 const baseUrl = "http://localhost:3000";
 
-export const fetchTransactions = async () => {
-  const res = await fetch(baseUrl + "/api/transactions");
+export const fetchAllTransactions = async () => {
+  try {
+    const res = await fetch(baseUrl + "/api/transactions");
+    if (!res.ok) {
+      throw new Error(`Failed to fetch transactions: ${res.statusText}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    throw error;
+  }
+};
+
+export const fetchCategories = async () => {
+  const res = await fetch(baseUrl + "/api/categories");
+  if (!res.ok) {
+    throw new Error("Failed to fetch categories");
+  }
   return res.json();
 };
 
-export const addTransaction = async (transaction: TransactionType) => {
+export const addTransaction = async (
+  transaction: TransactionType,
+): Promise<TransactionType> => {
   const res = await fetch(baseUrl + "/api/transactions", {
     method: "POST",
     body: JSON.stringify(transaction),
@@ -16,7 +34,8 @@ export const addTransaction = async (transaction: TransactionType) => {
       "Content-Type": "application/json",
     },
   });
-  if (!res.ok) throw new Error("Failed to add transaction");
+  if (!res.ok) throw new Error(`Failed to add transaction: ${res.statusText}`);
+
   return res.json();
 };
 

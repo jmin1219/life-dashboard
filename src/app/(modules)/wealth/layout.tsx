@@ -1,14 +1,9 @@
 import React from "react";
 import ModuleNavbar from "@/components/ModuleNavbar";
-import { fetchTransactions } from "@/lib/api";
-import { TransactionType } from "@/models/types";
+import { fetchAllTransactions, fetchCategories } from "@/lib/api";
 import { TransactionsProvider } from "@/context/TransactionsContext";
 
-const WealthLayout = async ({
-  children,
-}: {
-  children: React.ReactElement<{ transactions: TransactionType[] }>;
-}) => {
+const WealthLayout = async ({ children }: { children: React.ReactNode }) => {
   const wealthNavItems = [
     { name: "Overview", path: "/wealth" },
     { name: "Transactions", path: "/wealth/transactions" },
@@ -16,13 +11,19 @@ const WealthLayout = async ({
     { name: "Investments", path: "/wealth/investments" },
   ];
 
-  const transactions: TransactionType[] = await fetchTransactions();
+  const [transactions, categories] = await Promise.all([
+    fetchAllTransactions(),
+    fetchCategories(),
+  ]);
 
   return (
-    <TransactionsProvider initialTransactions={transactions}>
+    <TransactionsProvider
+      initialTransactions={transactions}
+      initialCategories={categories}
+    >
       <div className="flex h-full w-full flex-col lg:overflow-hidden">
         <ModuleNavbar navItems={wealthNavItems} />
-        <main>{React.cloneElement(children, { transactions })}</main>
+        <main>{children}</main>
       </div>
     </TransactionsProvider>
   );

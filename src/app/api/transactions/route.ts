@@ -1,5 +1,5 @@
+import db from "@/db/connection";
 import {
-  addTransaction,
   deleteTransaction,
   getAllTransactions,
   updateTransaction,
@@ -10,7 +10,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const transactions = getAllTransactions();
-    return NextResponse.json(transactions);
+    return NextResponse.json(transactions, { status: 200 });
   } catch (error) {
     console.error("Error fetching transactions:", error);
     return new NextResponse("Failed to fetch transactions", { status: 500 });
@@ -21,7 +21,23 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const newTransaction = addTransaction(body);
+    const stmt = db.prepare(
+      `INSERT INTO transactions (date, amount, method, category_id, title, details, processed) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    );
+    const result = stmt.run(
+      body.date,
+      body.amount,
+      body.method,
+      body.categoryId,
+      body.title,
+      body.details,
+      body.processed,
+    );
+
+    const newTransaction = {
+      id: result.lastInsertRowid,
+      ...body,
+    };
     return NextResponse.json(newTransaction, { status: 201 });
   } catch (error) {
     console.error("Error adding transaction:", error);

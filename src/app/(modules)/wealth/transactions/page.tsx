@@ -31,7 +31,7 @@ const TransactionsTab = () => {
       </div>
       <Separator className="my-2" />
       {/* ------------------------ ROW 3 - BAR CHART ------------------------ */}
-      <TransactionBarChart />
+      <TransactionBarChart transactions={transactions} />
       <Separator className="my-2" />
       {/* ------------------------ ROW 4 - TABLE & PIE CHART ------------------------ */}
       <div className="flex flex-col lg:flex-row">

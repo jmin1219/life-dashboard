@@ -1,10 +1,18 @@
 export interface TransactionType {
-  id?: number;
-  date: string;
+  id?: number; // This is optional for new transactions
+  date: string; // Stored as YYYY-MM-DD
   amount: number;
   method: string;
-  category: string;
-  description?: string;
+  categoryId: number; // Matches category_id in the database
+  category_name?: string;
+  category_color?: string;
+  title?: string;
   details?: string;
-  processed?: boolean;
+  processed: boolean;
+}
+
+export interface CategoryType {
+  id?: number;
+  name: string;
+  color: string;
 }
