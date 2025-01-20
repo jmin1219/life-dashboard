@@ -1,6 +1,6 @@
 import React from "react";
 import ModuleNavbar from "@/components/ModuleNavbar";
-import { fetchAllTransactions, fetchCategories } from "@/lib/api";
+import { fetchAllTransactions, fetchAllCategories } from "@/lib/api";
 import { TransactionsProvider } from "@/context/TransactionsContext";
 
 const WealthLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -13,7 +13,7 @@ const WealthLayout = async ({ children }: { children: React.ReactNode }) => {
 
   const [transactions, categories] = await Promise.all([
     fetchAllTransactions(),
-    fetchCategories(),
+    fetchAllCategories(),
   ]);
 
   return (

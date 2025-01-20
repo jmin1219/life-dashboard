@@ -1,5 +1,5 @@
-import db from "@/db/connection";
 import {
+  addTransaction,
   deleteTransaction,
   getAllTransactions,
   updateTransaction,
@@ -21,23 +21,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const stmt = db.prepare(
-      `INSERT INTO transactions (date, amount, method, category_id, title, details, processed) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    );
-    const result = stmt.run(
-      body.date,
-      body.amount,
-      body.method,
-      body.categoryId,
-      body.title,
-      body.details,
-      body.processed,
-    );
-
-    const newTransaction = {
-      id: result.lastInsertRowid,
-      ...body,
-    };
+    const newTransaction = addTransaction(body);
     return NextResponse.json(newTransaction, { status: 201 });
   } catch (error) {
     console.error("Error adding transaction:", error);

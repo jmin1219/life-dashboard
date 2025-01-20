@@ -30,9 +30,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import AddCategoryModal from "./AddCategoryModal";
 
 const AddTransactionModal = () => {
-  const { transactions, setTransactions } = useTransactions();
+  const { transactions, setTransactions, categories } = useTransactions();
+
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
 
   const [form, setForm] = useState({
     date: new Date().toISOString().split("T")[0],
@@ -164,25 +168,30 @@ const AddTransactionModal = () => {
               Category
             </Label>
             <Select
-              onValueChange={(value) =>
+              onValueChange={(value) => {
+                if (value === "add-new") {
+                  setShowAddCategoryModal(true);
+                  return;
+                }
                 setForm((prev) => ({
                   ...prev,
                   categoryId: parseInt(value, 10),
-                }))
-              }
+                }));
+              }}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select a Category" />
               </SelectTrigger>
               <SelectContent>
-                {transactions.map((item) => (
-                  <SelectItem
-                    key={item.categoryId}
-                    value={item.categoryId.toString()}
-                  >
-                    {item}
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id.toString()}>
+                    {category.name}
                   </SelectItem>
                 ))}
+                <Separator />
+                <SelectItem key="add-new" value="add-new">
+                  Add New Category
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -227,6 +236,15 @@ const AddTransactionModal = () => {
           <Button onClick={handleSubmit}>Add Transaction</Button>
         </DialogFooter>
       </DialogContent>
+      {showAddCategoryModal && (
+        <AddCategoryModal
+          open={showAddCategoryModal}
+          onClose={() => setShowAddCategoryModal(false)}
+          onCategoryAdded={() => {
+            setShowAddCategoryModal(false);
+          }}
+        />
+      )}
     </Dialog>
   );
 };

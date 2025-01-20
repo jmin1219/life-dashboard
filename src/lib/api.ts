@@ -1,9 +1,9 @@
-import { TransactionType } from "@/models/types";
+import { CategoryType, TransactionType } from "@/models/types";
 
 // TODO: Change baseurl
 const baseUrl = "http://localhost:3000";
 
-export const fetchAllTransactions = async () => {
+export const fetchAllTransactions = async (): Promise<TransactionType[]> => {
   try {
     const res = await fetch(baseUrl + "/api/transactions");
     if (!res.ok) {
@@ -16,16 +16,8 @@ export const fetchAllTransactions = async () => {
   }
 };
 
-export const fetchCategories = async () => {
-  const res = await fetch(baseUrl + "/api/categories");
-  if (!res.ok) {
-    throw new Error("Failed to fetch categories");
-  }
-  return res.json();
-};
-
 export const addTransaction = async (
-  transaction: TransactionType,
+  transaction: Omit<TransactionType, "id">,
 ): Promise<TransactionType> => {
   const res = await fetch(baseUrl + "/api/transactions", {
     method: "POST",
@@ -60,4 +52,27 @@ export const deleteTransaction = async (id: number) => {
     },
   });
   if (!res.ok) throw new Error("Failed to update transaction");
+};
+
+export const fetchAllCategories = async (): Promise<CategoryType[]> => {
+  const res = await fetch(baseUrl + "/api/categories");
+  if (!res.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+  return res.json();
+};
+
+export const addCategory = async (
+  category: Omit<CategoryType, "id">,
+): Promise<CategoryType> => {
+  const res = await fetch(baseUrl + "/api/category", {
+    method: "POST",
+    body: JSON.stringify(category),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) throw new Error(`Failed to add transaction: ${res.statusText}`);
+
+  return res.json();
 };
