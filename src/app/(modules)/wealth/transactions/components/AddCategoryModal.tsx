@@ -71,7 +71,13 @@ const AddCategoryModal = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        console.log("AddCategoryModal State:", isOpen);
+        onClose();
+      }}
+    >
       <DialogContent className="max-w-lg rounded-md p-6 shadow-lg">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">

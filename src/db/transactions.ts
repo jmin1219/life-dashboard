@@ -18,10 +18,11 @@ export const addTransactionToDB = ({
   title,
   details,
   processed,
+  type,
 }: Omit<TransactionType, "id">): TransactionType => {
   const stmt =
-    db.prepare(`INSERT INTO transactions (date, amount, method, category_id, title, details, processed)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    db.prepare(`INSERT INTO transactions (date, amount, method, category_id, title, details, processed, type)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `);
   const result = stmt.run(
     date,
@@ -31,6 +32,7 @@ export const addTransactionToDB = ({
     title || null,
     details || null,
     processed ? 1 : 0,
+    type || "expense",
   );
 
   return {
@@ -42,6 +44,7 @@ export const addTransactionToDB = ({
     title,
     details,
     processed,
+    type: type || "expense",
   };
 };
 

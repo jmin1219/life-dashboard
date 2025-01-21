@@ -49,6 +49,7 @@ const AddTransactionModal = () => {
     title: "",
     details: "",
     processed: true,
+    type: "expense",
   });
 
   const handleDateChange = (date: Date | undefined) => {
@@ -90,6 +91,7 @@ const AddTransactionModal = () => {
         title: "",
         details: "",
         processed: true,
+        type: "",
       });
       setShowAddCategoryModal(false);
       setShowAddTransactionModal(false);
@@ -107,15 +109,16 @@ const AddTransactionModal = () => {
   return (
     <Dialog
       open={showAddTransactionModal}
-      onOpenChange={setShowAddTransactionModal}
+      onOpenChange={(isOpen) => {
+        setShowAddTransactionModal(isOpen);
+        if (!isOpen) {
+          setShowAddCategoryModal(false);
+        }
+      }}
     >
       <DialogTrigger asChild>
         <div className="flex items-center justify-center rounded-xl border border-slate-600 p-0.5">
-          <Button
-            variant="ghost"
-            className="m-0.5 rounded-[8px] text-lg"
-            onClick={() => setShowAddCategoryModal(true)}
-          >
+          <Button variant="ghost" className="m-0.5 rounded-[8px] text-lg">
             <AddIcon />
             <span className="hidden lg:block">Add Transaction</span>
           </Button>
@@ -171,6 +174,28 @@ const AddTransactionModal = () => {
             />
           </div>
 
+          {/* Type */}
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="type" className="text-right">
+              Type
+            </Label>
+            <Select
+              onValueChange={(value) =>
+                setForm((prev) => ({ ...prev, type: value }))
+              }
+              value={form.type}
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="expense">Expense</SelectItem>
+                <SelectItem value="income">Income</SelectItem>
+                <SelectItem value="investment">Investment</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* Amount */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="amount" className="text-right">
@@ -205,6 +230,7 @@ const AddTransactionModal = () => {
                   categoryId: parseInt(value, 10),
                 }));
               }}
+              value={form.categoryId ? form.categoryId.toString() : ""}
             >
               <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Select a Category" />
@@ -281,6 +307,7 @@ const AddTransactionModal = () => {
             <Input
               id="processed"
               type="checkbox"
+              checked={form.processed}
               className="col-span-3"
               onChange={(e) =>
                 setForm({
@@ -297,6 +324,8 @@ const AddTransactionModal = () => {
           </Button>
         </DialogFooter>
       </DialogContent>
+
+      {/* Add Category Modal */}
       {showAddCategoryModal && (
         <AddCategoryModal
           open={showAddCategoryModal}

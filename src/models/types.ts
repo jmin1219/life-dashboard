@@ -7,6 +7,7 @@ export interface TransactionType {
   title?: string;
   details?: string;
   processed: boolean;
+  type: string;
 }
 
 export interface CategoryType {

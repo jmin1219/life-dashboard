@@ -11,6 +11,7 @@
 --   processed BOOLEAN DEFAULT TRUE
 -- );
 
+-- ALTER TABLE transactions ADD COLUMN type TEXT DEFAULT 'expense';
 -- -- ------------------ CATEGORIES TABLE SETUP ------------------
 -- CREATE TABLE IF NOT EXISTS categories (
 --   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,4 +25,3 @@
 --   ('Dining', '#33FF57'),
 --   ('Transportation', '#5733FF'),
 --   ('Entertainment', '#FFD700');
-
