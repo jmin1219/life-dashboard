@@ -38,6 +38,7 @@ const AddTransactionModal = () => {
   const { toast } = useToast();
   const { setTransactions, categories } = useTransactions();
 
+  const [showAddTransactionModal, setShowAddTransactionModal] = useState(false);
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
 
   const [form, setForm] = useState({
@@ -90,8 +91,8 @@ const AddTransactionModal = () => {
         details: "",
         processed: true,
       });
-
       setShowAddCategoryModal(false);
+      setShowAddTransactionModal(false);
     } catch (error) {
       console.error("Error adding transaction:", error);
 
@@ -104,10 +105,17 @@ const AddTransactionModal = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog
+      open={showAddTransactionModal}
+      onOpenChange={setShowAddTransactionModal}
+    >
       <DialogTrigger asChild>
         <div className="flex items-center justify-center rounded-xl border border-slate-600 p-0.5">
-          <Button variant="ghost" className="m-0.5 rounded-[8px] text-lg">
+          <Button
+            variant="ghost"
+            className="m-0.5 rounded-[8px] text-lg"
+            onClick={() => setShowAddCategoryModal(true)}
+          >
             <AddIcon />
             <span className="hidden lg:block">Add Transaction</span>
           </Button>
@@ -284,7 +292,9 @@ const AddTransactionModal = () => {
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleSubmit}>Add Transaction</Button>
+          <Button type="submit" onClick={handleSubmit}>
+            Add Transaction
+          </Button>
         </DialogFooter>
       </DialogContent>
       {showAddCategoryModal && (
