@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -61,6 +62,11 @@ const AddCategoryModal = ({
       onClose();
     } catch (error) {
       console.error("Error adding category:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create category. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -69,8 +75,11 @@ const AddCategoryModal = ({
       <DialogContent className="max-w-lg rounded-md p-6 shadow-lg">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
-            Create New Category
+            Create a New Category
           </DialogTitle>
+          <DialogDescription>
+            Select a name and color for the new category.
+          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">

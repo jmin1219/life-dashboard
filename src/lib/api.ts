@@ -75,7 +75,7 @@ export const getCategories = async (): Promise<CategoryType[]> => {
 export const postCategory = async (
   category: Omit<CategoryType, "id">,
 ): Promise<CategoryType> => {
-  const res = await fetch(baseUrl + "/api/category", {
+  const res = await fetch(baseUrl + "/api/categories", {
     method: "POST",
     body: JSON.stringify(category),
     headers: {
