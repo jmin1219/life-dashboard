@@ -43,7 +43,7 @@ const TransactionsTab = () => {
         <Separator orientation="vertical" className="mx-2" />
         <div className="w-3/4 flex-grow flex-col">
           <div className="overflow-y-auto">
-            <TransactionTable transactions={transactions} />
+            <TransactionTable />
           </div>
         </div>
       </div>

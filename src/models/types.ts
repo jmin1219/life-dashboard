@@ -3,7 +3,7 @@ export interface TransactionType {
   date: string; // Stored as YYYY-MM-DD
   amount: number;
   method: string;
-  categoryId: number; // Matches category_id in the database
+  category_id: number; // Matches category_id in the database
   title?: string;
   details?: string;
   processed: boolean;

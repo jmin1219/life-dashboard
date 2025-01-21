@@ -45,7 +45,7 @@ const AddTransactionModal = () => {
     date: new Date().toISOString().split("T")[0],
     amount: 0,
     method: "",
-    categoryId: 0,
+    category_id: 0,
     title: "",
     details: "",
     processed: true,
@@ -63,7 +63,7 @@ const AddTransactionModal = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (form.amount <= 0 || form.categoryId === 0 || !form.method) {
+    if (form.amount <= 0 || form.category_id === 0 || !form.method) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -72,7 +72,7 @@ const AddTransactionModal = () => {
       const preprocessedForm = {
         ...form,
         amount: parseFloat(form.amount.toString()) || 0,
-        categoryId: form.categoryId || 0,
+        categoryId: form.category_id || 0,
         date: new Date(form.date).toISOString().split("T")[0],
       };
       const newTransaction = await postTransaction(preprocessedForm);
@@ -87,7 +87,7 @@ const AddTransactionModal = () => {
         date: new Date().toISOString().split("T")[0],
         amount: 0,
         method: "",
-        categoryId: 0,
+        category_id: 0,
         title: "",
         details: "",
         processed: true,
@@ -230,7 +230,7 @@ const AddTransactionModal = () => {
                   categoryId: parseInt(value, 10),
                 }));
               }}
-              value={form.categoryId ? form.categoryId.toString() : ""}
+              value={form.category_id ? form.category_id.toString() : ""}
             >
               <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Select a Category" />
