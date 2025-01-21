@@ -1,10 +1,11 @@
 import { CategoryType, TransactionType } from "@/models/types";
 
-// TODO: Change baseurl
+// TODO: Change baseurl to .env
 const baseUrl = "http://localhost:3000";
 
-export const fetchAllTransactions = async (): Promise<TransactionType[]> => {
+export const getTransactions = async (): Promise<TransactionType[]> => {
   try {
+    console.log("Fetching transactions from API...");
     const res = await fetch(baseUrl + "/api/transactions");
     if (!res.ok) {
       throw new Error(`Failed to fetch transactions: ${res.statusText}`);
@@ -16,7 +17,7 @@ export const fetchAllTransactions = async (): Promise<TransactionType[]> => {
   }
 };
 
-export const addTransaction = async (
+export const postTransaction = async (
   transaction: Omit<TransactionType, "id">,
 ): Promise<TransactionType> => {
   const res = await fetch(baseUrl + "/api/transactions", {
@@ -31,7 +32,7 @@ export const addTransaction = async (
   return res.json();
 };
 
-export const updateTransaction = async (transaction: TransactionType) => {
+export const putTransaction = async (transaction: TransactionType) => {
   const res = await fetch(baseUrl + "/api/transactions", {
     method: "PUT",
     body: JSON.stringify(transaction),
@@ -54,15 +55,24 @@ export const deleteTransaction = async (id: number) => {
   if (!res.ok) throw new Error("Failed to update transaction");
 };
 
-export const fetchAllCategories = async (): Promise<CategoryType[]> => {
-  const res = await fetch(baseUrl + "/api/categories");
-  if (!res.ok) {
-    throw new Error("Failed to fetch categories");
+// ----------------------- CATEGORIES -----------------------
+
+export const getCategories = async (): Promise<CategoryType[]> => {
+  try {
+    console.log("Fetching categories from API...");
+    const res = await fetch(baseUrl + "/api/categories");
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch categories");
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    throw error;
   }
-  return res.json();
 };
 
-export const addCategory = async (
+export const postCategory = async (
   category: Omit<CategoryType, "id">,
 ): Promise<CategoryType> => {
   const res = await fetch(baseUrl + "/api/category", {

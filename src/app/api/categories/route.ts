@@ -1,10 +1,9 @@
-import { getAllCategories } from "@/db/transactions";
-import { addCategory } from "@/lib/api";
+import { getCategories, postCategory } from "@/lib/api";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const categories = getAllCategories();
+    const categories = getCategories();
     return NextResponse.json(categories, { status: 200 });
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -15,7 +14,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const newCategory = addCategory(body);
+    const newCategory = postCategory(body);
     return NextResponse.json(newCategory, { status: 201 });
   } catch (error) {
     console.error("Error creating category:", error);

@@ -1,7 +1,8 @@
 import React from "react";
 import ModuleNavbar from "@/components/ModuleNavbar";
-import { fetchAllTransactions, fetchAllCategories } from "@/lib/api";
 import { TransactionsProvider } from "@/context/TransactionsContext";
+import { fetchTransactionsFromDB } from "@/db/transactions";
+import { fetchCategoriesFromDB } from "@/db/categories";
 
 const WealthLayout = async ({ children }: { children: React.ReactNode }) => {
   const wealthNavItems = [
@@ -11,10 +12,8 @@ const WealthLayout = async ({ children }: { children: React.ReactNode }) => {
     { name: "Investments", path: "/wealth/investments" },
   ];
 
-  const [transactions, categories] = await Promise.all([
-    fetchAllTransactions(),
-    fetchAllCategories(),
-  ]);
+  const transactions = fetchTransactionsFromDB();
+  const categories = fetchCategoriesFromDB();
 
   return (
     <TransactionsProvider

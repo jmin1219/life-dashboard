@@ -10,10 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Toast } from "@/components/ui/toast";
 import { useTransactions } from "@/context/TransactionsContext";
 import { useToast } from "@/hooks/use-toast";
-import { addCategory } from "@/lib/api";
+import { postCategory } from "@/lib/api";
 import { useState } from "react";
 
 const AddCategoryModal = ({
@@ -45,13 +44,13 @@ const AddCategoryModal = ({
       return;
     }
     try {
-      const newCategory = await addCategory({
+      const newCategory = await postCategory({
         name: form.name.trim(),
         color: form.color,
       });
 
       setCategories((prev) => [...prev, newCategory]);
-      
+
       setForm({ name: "", color: "#FFFFFF" });
       onCategoryAdded();
 

@@ -1,72 +1,72 @@
 import { TransactionType } from "@/models/types";
 import db from "./connection";
 
-export const getAllTransactions = () => {
+export const fetchTransactionsFromDB = (): TransactionType[] => {
   const stmt = db.prepare(`
-    SELECT 
-      transactions.id,
-      transactions.date,
-      transactions.amount,
-      transactions.method,
-      transactions.category_id AS categoryId,
-      transactions.title,
-      transactions.details,
-      transactions.processed,
-      categories.name AS category_name,
-      categories.color AS category_color
+    SELECT *
     FROM transactions
-    JOIN categories ON transactions.category_id = categories.id
     ORDER BY transactions.date DESC
   `);
-  return stmt.all();
+  return stmt.all() as TransactionType[];
 };
 
-export const getAllCategories = () => {
-  const stmt = db.prepare("SELECT id, name, color FROM categories");
-  return stmt.all();
-};
-
-export const addTransaction = (
-  transaction: TransactionType,
-): TransactionType => {
+export const addTransactionToDB = ({
+  date,
+  amount,
+  method,
+  categoryId,
+  title,
+  details,
+  processed,
+}: Omit<TransactionType, "id">): TransactionType => {
   const stmt =
     db.prepare(`INSERT INTO transactions (date, amount, method, category, description, details, processed)
     VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
   const result = stmt.run(
-    transaction.date,
-    transaction.amount,
-    transaction.method,
-    transaction.categoryId,
-    transaction.title || null,
-    transaction.details || null,
-    transaction.processed ? 1 : 0,
+    date,
+    amount,
+    method,
+    categoryId,
+    title,
+    details,
+    processed,
   );
 
-  return { id: result.lastInsertRowid as number, ...transaction };
+  return {
+    id: result.lastInsertRowid as number,
+    date,
+    amount,
+    method,
+    categoryId,
+    title,
+    details,
+    processed,
+  };
 };
 
-export const updateTransaction = (
-  transaction: TransactionType,
-): TransactionType => {
-  const stmt = db.prepare(`UPDATE transactions
-    SET date = ?, amount = ?, method = ?, category = ?, title = ?, details = ?, processed = ?
-    WHERE id = ?
-    `);
-  stmt.run(
-    transaction.date,
-    transaction.amount,
-    transaction.method,
-    transaction.categoryId,
-    transaction.title || null,
-    transaction.details || null,
-    transaction.processed ? 1 : 0,
-  );
+// TODO: Add update and delete functions for SQLite
+// export const updateTransactionInDB = (
+//   transaction: TransactionType,
+// ): TransactionType => {
+//   const stmt = db.prepare(`UPDATE transactions
+//     SET date = ?, amount = ?, method = ?, category = ?, title = ?, details = ?, processed = ?
+//     WHERE id = ?
+//     `);
+//   stmt.run(
+//     transaction.date,
+//     transaction.amount,
+//     transaction.method,
+//     transaction.categoryId,
+//     transaction.title || null,
+//     transaction.details || null,
+//     transaction.processed ? 1 : 0,
+//   );
 
-  return transaction;
-};
+//   return transaction;
+// };
 
-export const deleteTransaction = (id: number) => {
-  const stmt = db.prepare("DELETE FROM transactions WHERE id = ?");
-  stmt.run(id);
-};
+// export const deleteTransactionInDB = (id: number) => {
+//   const stmt = db.prepare("DELETE FROM transactions WHERE id = ?");
+//   stmt.run(id);
+// };

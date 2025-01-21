@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { CirclePlus as AddIcon } from "lucide-react";
 import { useState } from "react";
-import { addTransaction } from "@/lib/api";
 import { useTransactions } from "@/context/TransactionsContext";
 import {
   Popover,

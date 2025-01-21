@@ -1,11 +1,12 @@
+import { CategoryType } from "@/models/types";
 import db from "./connection";
 
-export const getAllCategories = () => {
+export const fetchCategoriesFromDB = (): CategoryType[] => {
   const stmt = db.prepare("SELECT id, name, color FROM categories");
-  return stmt.all();
+  return stmt.all() as CategoryType[];
 };
 
-export const addCategory = ({
+export const addCategoryToDB = ({
   name,
   color,
 }: {

@@ -1,15 +1,15 @@
 import {
-  addTransaction,
   deleteTransaction,
-  getAllTransactions,
-  updateTransaction,
-} from "@/db/transactions";
+  getTransactions,
+  postTransaction,
+  putTransaction,
+} from "@/lib/api";
 import { NextResponse } from "next/server";
 
 // Fetch All Transactions
 export async function GET() {
   try {
-    const transactions = getAllTransactions();
+    const transactions = getTransactions();
     return NextResponse.json(transactions, { status: 200 });
   } catch (error) {
     console.error("Error fetching transactions:", error);
@@ -21,7 +21,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const newTransaction = addTransaction(body);
+    const newTransaction = postTransaction(body);
     return NextResponse.json(newTransaction, { status: 201 });
   } catch (error) {
     console.error("Error adding transaction:", error);
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
-    const updatedTransaction = updateTransaction(body);
+    const updatedTransaction = putTransaction(body);
     return NextResponse.json(updatedTransaction, { status: 200 });
   } catch (error) {
     console.error("Error updating transaction:", error);
