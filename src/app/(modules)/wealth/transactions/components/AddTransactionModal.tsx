@@ -31,9 +31,12 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import AddCategoryModal from "./AddCategoryModal";
+import { useToast } from "@/hooks/use-toast";
+import { postTransaction } from "@/lib/api";
 
 const AddTransactionModal = () => {
-  const { transactions, setTransactions, categories } = useTransactions();
+  const { toast } = useToast();
+  const { setTransactions, categories } = useTransactions();
 
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
 
@@ -56,12 +59,47 @@ const AddTransactionModal = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (form.amount <= 0 || form.categoryId === 0 || !form.method) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     try {
-      const newTransaction = await addTransaction(form);
+      const preprocessedForm = {
+        ...form,
+        amount: parseFloat(form.amount.toString()) || 0,
+        categoryId: form.categoryId || 0,
+        date: new Date(form.date).toISOString().split("T")[0],
+      };
+      const newTransaction = await postTransaction(preprocessedForm);
       setTransactions((prev) => [newTransaction, ...prev]);
+
+      toast({
+        title: "Transaction Added!",
+        description: "Your transaction has been successfully added.",
+      });
+
+      setForm({
+        date: new Date().toISOString().split("T")[0],
+        amount: 0,
+        method: "",
+        categoryId: 0,
+        title: "",
+        details: "",
+        processed: true,
+      });
+
+      setShowAddCategoryModal(false);
     } catch (error) {
       console.error("Error adding transaction:", error);
+
+      toast({
+        title: "Error",
+        description: "Failed to add the transaction. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -89,7 +127,7 @@ const AddTransactionModal = () => {
               Date
             </Label>
             <Popover>
-              <PopoverTrigger asChild>
+              <PopoverTrigger asChild className="col-span-3">
                 <Button variant="outline">
                   {form.date
                     ? format(new Date(form.date), "PPP")
@@ -143,25 +181,7 @@ const AddTransactionModal = () => {
             />
           </div>
 
-          {/* Payment Method */}
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="method" className="text-right">
-              Payment Method
-            </Label>
-            <Input
-              id="method"
-              className="col-span-3"
-              value={form.method}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  method: e.target.value,
-                })
-              }
-            />
-          </div>
-
-          {/* Category */}
+          {/* Category Dropdown */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="category" className="text-right">
               Category
@@ -178,13 +198,27 @@ const AddTransactionModal = () => {
                 }));
               }}
             >
-              <SelectTrigger>
+              <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Select a Category" />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id.toString()}>
-                    {category.name}
+                  <SelectItem
+                    key={category.id ?? `temp-${category.name}`}
+                    value={category.id ? category.id.toString() : ""}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="h-4 w-4 rounded-full"
+                        style={{ backgroundColor: category.color }}
+                      />
+                      <span
+                        className="font-medium"
+                        style={{ color: category.color }}
+                      >
+                        {category.name}
+                      </span>
+                    </div>
                   </SelectItem>
                 ))}
                 <Separator />
@@ -193,6 +227,24 @@ const AddTransactionModal = () => {
                 </SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Payment Method */}
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="method" className="text-right">
+              Payment Method
+            </Label>
+            <Input
+              id="method"
+              className="col-span-3"
+              value={form.method}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  method: e.target.value,
+                })
+              }
+            />
           </div>
 
           {/* Details */}

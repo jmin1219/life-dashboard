@@ -20,7 +20,7 @@ export const addTransactionToDB = ({
   processed,
 }: Omit<TransactionType, "id">): TransactionType => {
   const stmt =
-    db.prepare(`INSERT INTO transactions (date, amount, method, category, description, details, processed)
+    db.prepare(`INSERT INTO transactions (date, amount, method, category_id, title, details, processed)
     VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
   const result = stmt.run(
@@ -28,9 +28,9 @@ export const addTransactionToDB = ({
     amount,
     method,
     categoryId,
-    title,
-    details,
-    processed,
+    title || null,
+    details || null,
+    processed ? 1 : 0,
   );
 
   return {
@@ -46,27 +46,27 @@ export const addTransactionToDB = ({
 };
 
 // TODO: Add update and delete functions for SQLite
-// export const updateTransactionInDB = (
-//   transaction: TransactionType,
-// ): TransactionType => {
-//   const stmt = db.prepare(`UPDATE transactions
-//     SET date = ?, amount = ?, method = ?, category = ?, title = ?, details = ?, processed = ?
-//     WHERE id = ?
-//     `);
-//   stmt.run(
-//     transaction.date,
-//     transaction.amount,
-//     transaction.method,
-//     transaction.categoryId,
-//     transaction.title || null,
-//     transaction.details || null,
-//     transaction.processed ? 1 : 0,
-//   );
+export const updateTransactionInDB = (
+  transaction: TransactionType,
+): TransactionType => {
+  const stmt = db.prepare(`UPDATE transactions
+    SET date = ?, amount = ?, method = ?, category = ?, title = ?, details = ?, processed = ?
+    WHERE id = ?
+    `);
+  stmt.run(
+    transaction.date,
+    transaction.amount,
+    transaction.method,
+    transaction.categoryId,
+    transaction.title || null,
+    transaction.details || null,
+    transaction.processed ? 1 : 0,
+  );
 
-//   return transaction;
-// };
+  return transaction;
+};
 
-// export const deleteTransactionInDB = (id: number) => {
-//   const stmt = db.prepare("DELETE FROM transactions WHERE id = ?");
-//   stmt.run(id);
-// };
+export const deleteTransactionInDB = (id: number) => {
+  const stmt = db.prepare("DELETE FROM transactions WHERE id = ?");
+  stmt.run(id);
+};

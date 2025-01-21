@@ -1,5 +1,5 @@
 export interface TransactionType {
-  id?: number; // This is optional for new transactions
+  id: number; // This is optional for new transactions
   date: string; // Stored as YYYY-MM-DD
   amount: number;
   method: string;
@@ -10,7 +10,7 @@ export interface TransactionType {
 }
 
 export interface CategoryType {
-  id?: number;
+  id: number;
   name: string;
   color: string;
 }
