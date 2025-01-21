@@ -9,6 +9,7 @@ import {
   WalletCards as WalletCardsIcon,
   DollarSign as AmountIcon,
   SquareCheckBig as StatusIcon,
+  Layers as TypeIcon,
 } from "lucide-react";
 
 const FiltersMenu = () => {
@@ -16,6 +17,14 @@ const FiltersMenu = () => {
     <div className="flex items-center justify-center gap-5">
       <span className="text-sm text-muted-foreground">FILTERS:</span>
       <Menubar className="flex gap-3 rounded-[8px] border-0">
+        {/* ---------------- TYPR FILTER (Multi-select) ---------------- */}
+        <MenubarMenu>
+          <MenubarTrigger className="flex cursor-pointer gap-2 rounded-[6px] px-4 py-2 hover:bg-slate-800">
+            <TypeIcon size={20} />
+            <span className="hidden text-base lg:block">Type</span>
+          </MenubarTrigger>
+          <MenubarContent></MenubarContent>
+        </MenubarMenu>
         {/* ---------------- CATEGORY FILTER (Multi-select) ---------------- */}
         <MenubarMenu>
           <MenubarTrigger className="flex cursor-pointer gap-2 rounded-[6px] px-4 py-2 hover:bg-slate-800">
