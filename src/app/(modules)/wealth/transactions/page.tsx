@@ -23,7 +23,7 @@ const TransactionsTab = () => {
   return (
     <div className="flex h-full flex-col">
       {/* ------------------------ ROW 1 - DATE PICKER, & ADD TRANSACTION BUTTON ------------------------ */}
-      <div className="mx-[2%] my-3 flex justify-between">
+      <div className="mx-[8%] my-3 flex justify-between">
         <DatePicker />
         <AddTransactionModal />
       </div>
@@ -45,7 +45,7 @@ const TransactionsTab = () => {
               <span className="text-sm text-muted-foreground">
                 TOTAL EXPENSES
               </span>
-              <span className="text-xl font-semibold">
+              <span className="text-right text-xl font-semibold">
                 ₩ {totalExpenses.toLocaleString()}
               </span>
             </div>
@@ -53,7 +53,7 @@ const TransactionsTab = () => {
               <span className="text-sm text-muted-foreground">
                 TOTAL INCOME
               </span>
-              <span className="text-xl font-semibold">
+              <span className="text-right text-xl font-semibold">
                 ₩ {totalIncome.toLocaleString()}
               </span>
             </div>

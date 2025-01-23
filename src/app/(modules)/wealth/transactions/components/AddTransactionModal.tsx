@@ -125,7 +125,7 @@ const AddTransactionModal = () => {
     >
       <DialogTrigger asChild>
         <div className="flex items-center justify-center rounded-xl border border-slate-600 p-0.5">
-          <Button variant="ghost" className="m-0.5 rounded-[8px] text-lg">
+          <Button variant="ghost" className="text-md m-0.5 rounded-[8px]">
             <AddIcon />
             <span className="hidden lg:block">Add Transaction</span>
           </Button>
