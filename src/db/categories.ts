@@ -1,4 +1,4 @@
-import { CategoryType } from "@/models/types";
+import { CategoryType } from "@/models/Transaction";
 import db from "./connection";
 
 export const fetchCategoriesFromDB = (): CategoryType[] => {

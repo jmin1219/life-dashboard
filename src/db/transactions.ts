@@ -1,4 +1,4 @@
-import { TransactionType } from "@/models/types";
+import { TransactionType } from "@/models/Transaction";
 import db from "./connection";
 
 export const fetchTransactionsFromDB = (): TransactionType[] => {

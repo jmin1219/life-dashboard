@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 const FiltersMenu = () => {
+  // TODO: Add dropdown items
   return (
     <div className="flex items-center justify-center gap-5">
       <span className="text-sm text-muted-foreground">FILTERS:</span>

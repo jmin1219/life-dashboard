@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useTransactions } from "@/context/TransactionsContext";
+import { useTransactions } from "@/app/(modules)/wealth/context/TransactionsContext";
 import { useToast } from "@/hooks/use-toast";
 import { postCategory } from "@/lib/api";
 import { useState } from "react";

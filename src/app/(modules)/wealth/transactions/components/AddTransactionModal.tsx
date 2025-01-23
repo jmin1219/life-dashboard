@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { CirclePlus as AddIcon } from "lucide-react";
 import { useState } from "react";
-import { useTransactions } from "@/context/TransactionsContext";
+import { useTransactions } from "@/app/(modules)/wealth/context/TransactionsContext";
 import {
   Popover,
   PopoverContent,
@@ -38,6 +38,7 @@ const AddTransactionModal = () => {
   const { toast } = useToast();
   const { setTransactions, categories } = useTransactions();
 
+  const [showDatePopover, setShowDatePopover] = useState(false);
   const [showAddTransactionModal, setShowAddTransactionModal] = useState(false);
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
 
@@ -54,10 +55,16 @@ const AddTransactionModal = () => {
 
   const handleDateChange = (date: Date | undefined) => {
     if (date) {
+      const localDate = new Date(
+        date.getTime() - date.getTimezoneOffset() * 60000,
+      )
+        .toISOString()
+        .split("T")[0];
       setForm((prev) => ({
         ...prev,
-        date: date.toISOString().split("T")[0],
+        date: localDate,
       }));
+      setShowDatePopover(false);
     }
   };
 
@@ -137,9 +144,12 @@ const AddTransactionModal = () => {
             <Label htmlFor="date" className="text-right">
               Date
             </Label>
-            <Popover>
+            <Popover open={showDatePopover} onOpenChange={setShowDatePopover}>
               <PopoverTrigger asChild className="col-span-3">
-                <Button variant="outline">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowDatePopover((prev) => !prev)}
+                >
                   {form.date
                     ? format(new Date(form.date), "PPP")
                     : "Pick a date"}
@@ -227,7 +237,7 @@ const AddTransactionModal = () => {
                 }
                 setForm((prev) => ({
                   ...prev,
-                  categoryId: parseInt(value, 10),
+                  category_id: parseInt(value, 10),
                 }));
               }}
               value={form.category_id ? form.category_id.toString() : ""}
@@ -238,7 +248,7 @@ const AddTransactionModal = () => {
               <SelectContent>
                 {categories.map((category) => (
                   <SelectItem
-                    key={category.id ?? `temp-${category.name}`}
+                    key={category.id}
                     value={category.id ? category.id.toString() : ""}
                   >
                     <div className="flex items-center gap-2">

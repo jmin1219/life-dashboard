@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoryType, TransactionType } from "@/models/types";
+import { CategoryType, TransactionType } from "@/models/Transaction";
 import React, { createContext, useContext, useState } from "react";
 
 type TransactionsContextType = {

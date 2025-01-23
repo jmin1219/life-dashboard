@@ -25,3 +25,20 @@
 --   ('Dining', '#33FF57'),
 --   ('Transportation', '#5733FF'),
 --   ('Entertainment', '#FFD700');
+
+
+
+
+-- DELETE FROM transactions;
+-- DELETE FROM categories;
+
+
+-- INSERT INTO categories (name, color) VALUES
+-- ("Subscriptions", "#FF5733"),
+-- ("Transportation", "#33FF57"),
+-- ("Entertainment", "#3357FF"),
+-- ("Groceries", "#FF33A1"),
+-- ("Dining Out", "#A133FF"),
+-- ("Investments", "#33FFF5"),
+-- ("Miscellaneous", "#FF8C33");
+

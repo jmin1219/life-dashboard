@@ -8,20 +8,15 @@ import {
   NavigationMenuLink,
 } from "./ui/navigation-menu";
 
-interface NavItems {
-  name: string;
-  path: string;
-}
-
-interface NavbarProps {
-  navItems: NavItems[];
-}
-
-const ModuleNavbar: React.FC<NavbarProps> = ({ navItems }) => {
+const ModuleNavbar = ({
+  navItems,
+}: {
+  navItems: { name: string; path: string }[];
+}) => {
   const pathname = usePathname();
 
   return (
-    <div className="mb-3 flex w-full items-center justify-center">
+    <div className="mb-7 flex w-full items-center justify-center">
       <NavigationMenu className="rounded-full bg-slate-700 px-1.5 py-1">
         <NavigationMenuList className="flex space-x-3">
           {navItems.map((item) => (

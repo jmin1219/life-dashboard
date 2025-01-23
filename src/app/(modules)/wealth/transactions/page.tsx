@@ -7,26 +7,29 @@ import TransactionTable from "./components/TransactionTable";
 import TransactionPieCharts from "./components/TransactionPieChart";
 import FiltersMenu from "./components/FiltersMenu";
 import AddTransactionModal from "./components/AddTransactionModal";
-import { useTransactions } from "@/context/TransactionsContext";
+import { useTransactions } from "@/app/(modules)/wealth/context/TransactionsContext";
 
 const TransactionsTab = () => {
   const { transactions } = useTransactions();
 
-  const totalExpenses = transactions.reduce(
-    (sum, transaction) => sum + transaction.amount,
-    0,
-  );
+  const totalExpenses = transactions
+    .filter((t) => t.type === "expense")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const totalIncome = transactions
+    .filter((t) => t.type === "income")
+    .reduce((sum, t) => sum + t.amount, 0);
 
   return (
     <div className="flex h-full flex-col">
       {/* ------------------------ ROW 1 - DATE PICKER, & ADD TRANSACTION BUTTON ------------------------ */}
-      <div className="mx-[10%] my-2 flex justify-between">
+      <div className="mx-[2%] my-3 flex justify-between">
         <DatePicker />
         <AddTransactionModal />
       </div>
       <Separator className="my-2" />
       {/* ------------------------ ROW 2 - FILTERS ------------------------ */}
-      <div className="mx-[5%]">
+      <div className="">
         <FiltersMenu />
       </div>
       <Separator className="my-2" />
@@ -35,12 +38,30 @@ const TransactionsTab = () => {
       <Separator className="my-2" />
       {/* ------------------------ ROW 4 - TABLE & PIE CHART ------------------------ */}
       <div className="flex flex-col lg:flex-row">
+        {/* TRANSACTION PIE CHARTS */}
         <div className="flex h-auto w-1/4 flex-col">
-          <span className="text-muted-foreground">TOTAL EXPENSES</span>
-          <span className="text-2xl font-semibold">₩ {totalExpenses}</span>
+          <div className="flex justify-between">
+            <div className="flex flex-col">
+              <span className="text-sm text-muted-foreground">
+                TOTAL EXPENSES
+              </span>
+              <span className="text-xl font-semibold">
+                ₩ {totalExpenses.toLocaleString()}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm text-muted-foreground">
+                TOTAL INCOME
+              </span>
+              <span className="text-xl font-semibold">
+                ₩ {totalIncome.toLocaleString()}
+              </span>
+            </div>
+          </div>
           <TransactionPieCharts transactions={transactions} />
         </div>
         <Separator orientation="vertical" className="mx-2" />
+        {/* TRANSACTION TABLE */}
         <div className="w-3/4 flex-grow flex-col">
           <div className="overflow-y-auto">
             <TransactionTable />
