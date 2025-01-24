@@ -1,15 +1,13 @@
 import {
   addTransactionToDB,
-  deleteTransactionInDB,
-  fetchTransactionsFromDB,
-  updateTransactionInDB,
-} from "@/db/transactions";
+  getAllTransactions,
+} from "@/app/(modules)/wealth/db/queries";
 import { NextResponse } from "next/server";
 
 // Fetch All Transactions
 export async function GET() {
   try {
-    const transactions = fetchTransactionsFromDB();
+    const transactions = getAllTransactions();
     return NextResponse.json(transactions, { status: 200 });
   } catch (error) {
     console.error("Error fetching transactions:", error);
@@ -21,6 +19,15 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+
+    const { title, amount, date, type, category_id } = body;
+    if (!title || !amount || !date || !type || !category_id) {
+      return NextResponse.json(
+        { error: "All field are required to create a transaction." },
+        { status: 400 },
+      );
+    }
+
     const newTransaction = addTransactionToDB(body);
     return NextResponse.json(newTransaction, { status: 201 });
   } catch (error) {

@@ -1,13 +1,19 @@
-import { addCategoryToDB, fetchCategoriesFromDB } from "@/db/categories";
+import {
+  addCategoryToDB,
+  getAllCategories,
+} from "@/app/(modules)/wealth/db/queries";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const categories = fetchCategoriesFromDB();
+    const categories = getAllCategories();
     return NextResponse.json(categories, { status: 200 });
   } catch (error) {
     console.error("Error fetching categories:", error);
-    return new NextResponse("Failed to fetch categories", { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch categories" },
+      { status: 500 },
+    );
   }
 }
 
@@ -24,7 +30,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const newCategory = addCategoryToDB({ name, color });
+    const newCategory = addCategoryToDB(name, color);
     return NextResponse.json(newCategory, { status: 201 });
   } catch (error) {
     console.error("Error creating category:", error);

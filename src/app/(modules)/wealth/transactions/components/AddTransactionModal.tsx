@@ -41,6 +41,7 @@ const AddTransactionModal = () => {
   const [showDatePopover, setShowDatePopover] = useState(false);
   const [showAddTransactionModal, setShowAddTransactionModal] = useState(false);
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [form, setForm] = useState({
     date: new Date().toISOString().split("T")[0],
@@ -52,6 +53,34 @@ const AddTransactionModal = () => {
     processed: true,
     type: "expense",
   });
+
+  const [errors, setErrors] = useState({
+    title: "",
+    amount: "",
+    method: "",
+    category_id: "",
+  });
+
+  const validateForm = () => {
+    const newErrors: {
+      title: string;
+      amount: string;
+      method: string;
+      category_id: string;
+    } = {} as {
+      title: string;
+      amount: string;
+      method: string;
+      category_id: string;
+    };
+    if (!form.title) newErrors.title = "Title is required.";
+    if (form.amount <= 0) newErrors.amount = "Amount must be greater than 0.";
+    if (!form.method) newErrors.method = "Payment method is required.";
+    if (form.category_id === 0)
+      newErrors.category_id = "Please select a category.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleDateChange = (date: Date | undefined) => {
     if (date) {
@@ -69,20 +98,12 @@ const AddTransactionModal = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (form.amount <= 0 || form.category_id === 0 || !form.method) {
-      alert("Please fill in all required fields.");
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
-      const preprocessedForm = {
-        ...form,
-        amount: parseFloat(form.amount.toString()) || 0,
-        categoryId: form.category_id || 0,
-        date: new Date(form.date).toISOString().split("T")[0],
-      };
-      const newTransaction = await postTransaction(preprocessedForm);
+      setIsLoading(true);
+
+      const newTransaction = await postTransaction(form);
       setTransactions((prev) => [newTransaction, ...prev]);
 
       toast({
@@ -110,6 +131,8 @@ const AddTransactionModal = () => {
         description: "Failed to add the transaction. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -131,7 +154,7 @@ const AddTransactionModal = () => {
           </Button>
         </div>
       </DialogTrigger>
-      <DialogContent className="">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>New Transaction</DialogTitle>
           <DialogDescription>

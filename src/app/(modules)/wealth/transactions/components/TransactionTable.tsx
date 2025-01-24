@@ -11,7 +11,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { useTransactions } from "@/app/(modules)/wealth/context/TransactionsContext";
-import { TransactionType } from "@/models/Transaction";
+import { TransactionType } from "@/app/(modules)/wealth/types/Transaction";
 import { useState } from "react";
 import {
   AlertDialog,

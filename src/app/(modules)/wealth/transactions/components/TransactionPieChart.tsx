@@ -6,7 +6,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { TransactionType } from "@/models/Transaction";
+import { TransactionType } from "@/app/(modules)/wealth/types/Transaction";
 import { Pie, PieChart } from "recharts";
 
 const TransactionPieCharts = ({

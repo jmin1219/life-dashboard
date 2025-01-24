@@ -1,23 +1,24 @@
 -- -- ------------------ TRANSACTIONS TABLE SETUP ------------------
 
--- CREATE TABLE IF NOT EXISTS transactions (
---   id INTEGER PRIMARY KEY AUTOINCREMENT,
---   date DATE NOT NULL,
---   amount REAL NOT NULL CHECK (amount > 0),
---   method TEXT NOT NULL,
---   category_id INTEGER NOT NULL REFERENCES categories(id),
---   title TEXT DEFAULT NULL,
---   details TEXT DEFAULT NULL,
---   processed BOOLEAN DEFAULT TRUE
--- );
+CREATE TABLE IF NOT EXISTS transactions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  amount DECIMAL(10, 2) NOT NULL,
+  date DATE NOT NULL,
+  type TEXT NOT NULL CHECK (type IN ('expense', 'income', 'investment')),
+  category_id INTEGER NOT NULL,
+  method TEXT NOT NULL,
+  details TEXT DEFAULT NULL,
+  processed BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (category_id) REFERENCES categories (id)
+);
 
--- ALTER TABLE transactions ADD COLUMN type TEXT DEFAULT 'expense';
 -- -- ------------------ CATEGORIES TABLE SETUP ------------------
--- CREATE TABLE IF NOT EXISTS categories (
---   id INTEGER PRIMARY KEY AUTOINCREMENT,
---   name TEXT NOT NULL UNIQUE,
---   color TEXT NOT NULL
--- );
+CREATE TABLE IF NOT EXISTS categories (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE,
+  color TEXT NOT NULL
+);
 
 -- -- Default categories and colors
 -- INSERT INTO categories (name, color) VALUES

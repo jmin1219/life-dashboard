@@ -1,4 +1,7 @@
-import { CategoryType, TransactionType } from "@/models/Transaction";
+import {
+  CategoryType,
+  TransactionType,
+} from "@/app/(modules)/wealth/types/Transaction";
 
 // TODO: Change baseurl to .env
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
@@ -20,16 +23,22 @@ export const getTransactions = async (): Promise<TransactionType[]> => {
 export const postTransaction = async (
   transaction: Omit<TransactionType, "id">,
 ): Promise<TransactionType> => {
-  const res = await fetch(baseUrl + "/api/transactions", {
-    method: "POST",
-    body: JSON.stringify(transaction),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!res.ok) throw new Error(`Failed to add transaction: ${res.statusText}`);
-
-  return res.json();
+  try {
+    const response = await fetch(baseUrl + "/api/transactions", {
+      method: "POST",
+      body: JSON.stringify(transaction),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to add transaction: ${response.statusText}`);
+    }
+    return response.json();
+  } catch (error) {
+    console.error("API Error: Failed to add transaction", error);
+    throw error;
+  }
 };
 
 export const putTransaction = async (transaction: TransactionType) => {
@@ -59,15 +68,14 @@ export const deleteTransaction = async (id: number) => {
 
 export const getCategories = async (): Promise<CategoryType[]> => {
   try {
-    console.log("Fetching categories from API...");
-    const res = await fetch(baseUrl + "/api/categories");
+    const response = await fetch(baseUrl + "/api/categories");
 
-    if (!res.ok) {
+    if (!response.ok) {
       throw new Error("Failed to fetch categories");
     }
-    return res.json();
+    return response.json();
   } catch (error) {
-    console.error("Error fetching categories:", error);
+    console.error("API Error: Failed fetching categories:", error);
     throw error;
   }
 };
@@ -75,14 +83,20 @@ export const getCategories = async (): Promise<CategoryType[]> => {
 export const postCategory = async (
   category: Omit<CategoryType, "id">,
 ): Promise<CategoryType> => {
-  const res = await fetch(baseUrl + "/api/categories", {
-    method: "POST",
-    body: JSON.stringify(category),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!res.ok) throw new Error(`Failed to add transaction: ${res.statusText}`);
+  try {
+    const response = await fetch(baseUrl + "/api/categories", {
+      method: "POST",
+      body: JSON.stringify(category),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok)
+      throw new Error(`Failed to add transaction: ${response.statusText}`);
 
-  return res.json();
+    return response.json();
+  } catch (error) {
+    console.error("API Error: Failed to add category", error);
+    throw error;
+  }
 };

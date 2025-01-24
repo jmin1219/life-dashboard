@@ -28,8 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/lib/utils.ts",
-    "src/db/initDB.js",
-    "src/db/connection.js"
+    "src/app/(modules)/wealth/db/initDB.js",
+    "src/app/(modules)/wealth/db/connection.js"
   ],
   "exclude": ["node_modules"]
 }
