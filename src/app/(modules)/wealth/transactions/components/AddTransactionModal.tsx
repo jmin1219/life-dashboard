@@ -58,6 +58,7 @@ const AddTransactionModal = () => {
     title: "",
     amount: "",
     method: "",
+    type: "",
     category_id: "",
   });
 
@@ -65,16 +66,19 @@ const AddTransactionModal = () => {
     const newErrors: {
       title: string;
       amount: string;
+      type: string;
       method: string;
       category_id: string;
     } = {} as {
       title: string;
+      type: string;
       amount: string;
       method: string;
       category_id: string;
     };
     if (!form.title) newErrors.title = "Title is required.";
     if (form.amount <= 0) newErrors.amount = "Amount must be greater than 0.";
+    if (!form.type) newErrors.type = "Transaction type is required.";
     if (!form.method) newErrors.method = "Payment method is required.";
     if (form.category_id === 0)
       newErrors.category_id = "Please select a category.";
@@ -97,7 +101,7 @@ const AddTransactionModal = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (addAnother: boolean = false) => {
     if (!validateForm()) return;
 
     try {
@@ -111,18 +115,21 @@ const AddTransactionModal = () => {
         description: "Your transaction has been successfully added.",
       });
 
-      setForm({
-        date: new Date().toISOString().split("T")[0],
-        amount: 0,
-        method: "",
-        category_id: 0,
-        title: "",
-        details: "",
-        processed: true,
-        type: "",
-      });
-      setShowAddCategoryModal(false);
-      setShowAddTransactionModal(false);
+      if (addAnother) {
+        setForm({
+          date: new Date().toISOString().split("T")[0],
+          amount: 0,
+          method: "",
+          category_id: 0,
+          title: "",
+          details: "",
+          processed: true,
+          type: "",
+        });
+      } else {
+        setShowAddCategoryModal(false);
+        setShowAddTransactionModal(false);
+      }
     } catch (error) {
       console.error("Error adding transaction:", error);
 
@@ -197,6 +204,7 @@ const AddTransactionModal = () => {
             <Input
               id="title"
               value={form.title}
+              autoFocus
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -205,6 +213,11 @@ const AddTransactionModal = () => {
               }
               className="col-span-3"
             />
+            {errors.title && (
+              <p className="col-span-4 text-right text-sm text-red-500">
+                {errors.title}
+              </p>
+            )}
           </div>
 
           {/* Type */}
@@ -227,6 +240,11 @@ const AddTransactionModal = () => {
                 <SelectItem value="investment">Investment</SelectItem>
               </SelectContent>
             </Select>
+            {errors.type && (
+              <p className="col-span-4 text-right text-sm text-red-500">
+                {errors.type}
+              </p>
+            )}
           </div>
 
           {/* Amount */}
@@ -245,6 +263,11 @@ const AddTransactionModal = () => {
                 }))
               }
             />
+            {errors.amount && (
+              <p className="col-span-4 text-right text-sm text-red-500">
+                {errors.amount}
+              </p>
+            )}
           </div>
 
           {/* Category Dropdown */}
@@ -294,9 +317,15 @@ const AddTransactionModal = () => {
                 </SelectItem>
               </SelectContent>
             </Select>
+            {errors.category_id && (
+              <p className="col-span-4 text-right text-sm text-red-500">
+                {errors.category_id}
+              </p>
+            )}
           </div>
 
           {/* Payment Method */}
+          {/* TODO: Add dropdown of previously used list */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="method" className="text-right">
               Payment Method
@@ -312,6 +341,11 @@ const AddTransactionModal = () => {
                 })
               }
             />
+            {errors.method && (
+              <p className="col-span-4 text-right text-sm text-red-500">
+                {errors.method}
+              </p>
+            )}
           </div>
 
           {/* Details */}
@@ -352,8 +386,24 @@ const AddTransactionModal = () => {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={handleSubmit}>
-            Add Transaction
+          <Button
+            type="submit"
+            variant="secondary"
+            onClick={() => handleSubmit(true)}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <span className="loader"></span>
+            ) : (
+              "Save & Add Another"
+            )}
+          </Button>
+          <Button
+            type="submit"
+            onClick={() => handleSubmit(false)}
+            disabled={isLoading}
+          >
+            {isLoading ? <span className="loader"></span> : "Add Transaction"}
           </Button>
         </DialogFooter>
       </DialogContent>
