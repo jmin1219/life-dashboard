@@ -25,17 +25,21 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
+import { deleteTransaction } from "@/lib/api";
 
 const TransactionTable = () => {
-  const { transactions, categories, deleteTransaction, updateTransaction } =
-    useTransactions();
+  const { transactions, setTransactions, categories } = useTransactions();
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedTransaction, setSelectedTransaction] =
     useState<TransactionType>();
 
   if (!transactions || transactions.length === 0) {
-    return <div>No transactions available.</div>;
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        No transactions available.
+      </div>
+    );
   }
 
   const handleEdit = (transaction: TransactionType) => {
@@ -45,8 +49,15 @@ const TransactionTable = () => {
 
   const handleProcessTransaction = (transactionId: number) => {};
 
-  const handleDelete = (transactionId: number) => {
-    alert(`Deleting ${transactionId}`);
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteTransaction(id);
+      setTransactions((prev) => prev.filter((t) => t.id !== id));
+      // TODO: Add toast for delete confirmation
+    } catch (error) {
+      console.error("Error deleting transaction.", error);
+      // TODO: Add toast for delete fail
+    }
   };
 
   return (

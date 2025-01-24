@@ -1,5 +1,6 @@
 import {
   addTransactionToDB,
+  deleteTransactionFromDB,
   getAllTransactions,
 } from "@/app/(modules)/wealth/db/queries";
 import { NextResponse } from "next/server";
@@ -52,7 +53,13 @@ export async function PUT(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const { id } = await req.json();
-    deleteTransactionInDB(id);
+    if (!id) {
+      return NextResponse.json(
+        { error: "Transaction ID is required." },
+        { status: 400 },
+      );
+    }
+    deleteTransactionFromDB(id);
     return new NextResponse("Transaction deleted", { status: 200 });
   } catch (error) {
     console.error("Error deleting transaction:", error);

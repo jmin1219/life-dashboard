@@ -5,6 +5,8 @@ import {
 } from "../types/Transaction";
 import db from "./connection";
 
+// ----------------------- TRANSACTIONS -----------------------
+
 // Fetch all transactions joined with categories
 export const getAllTransactions = (): TransactionWithCategory[] => {
   return db
@@ -70,6 +72,22 @@ export const addTransactionToDB = (
     throw new Error("Failed to add transactionto the database");
   }
 };
+
+// Delete a transaction
+export const deleteTransactionFromDB = (id: number): void => {
+  try {
+    const result = db.prepare(`DELETE FROM transactions WHERE id = ?`).run(id);
+
+    if (result.changes === 0) {
+      throw new Error(`Transaction with ID ${id} not found.`);
+    }
+  } catch (error) {
+    console.error("Database Error: Failed to delete transaction", error);
+    throw new Error("Failed to delete transaction from the database.");
+  }
+};
+
+// ----------------------- CATEGORIES -----------------------
 
 // Fetch all categories
 export const getAllCategories = (): CategoryType[] => {

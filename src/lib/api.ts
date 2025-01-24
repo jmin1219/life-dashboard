@@ -53,15 +53,20 @@ export const putTransaction = async (transaction: TransactionType) => {
   return res.json();
 };
 
-export const deleteTransaction = async (id: number) => {
-  const res = await fetch(baseUrl + "/api/transactions", {
-    method: "DELETE",
-    body: JSON.stringify({ id }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!res.ok) throw new Error("Failed to update transaction");
+export const deleteTransaction = async (id: number): Promise<void> => {
+  try {
+    const res = await fetch(baseUrl + "/api/transactions", {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) throw new Error("Failed to update transaction");
+  } catch (error) {
+    console.error("API Error: Failed to delete transaction.", error);
+    throw error;
+  }
 };
 
 // ----------------------- CATEGORIES -----------------------

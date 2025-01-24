@@ -35,6 +35,7 @@ import { useToast } from "@/hooks/use-toast";
 import { postTransaction } from "@/lib/api";
 
 const AddTransactionModal = () => {
+  // TODO: Fix Toast
   const { toast } = useToast();
   const { setTransactions, categories } = useTransactions();
 
@@ -115,18 +116,17 @@ const AddTransactionModal = () => {
         description: "Your transaction has been successfully added.",
       });
 
-      if (addAnother) {
-        setForm({
-          date: new Date().toISOString().split("T")[0],
-          amount: 0,
-          method: "",
-          category_id: 0,
-          title: "",
-          details: "",
-          processed: true,
-          type: "",
-        });
-      } else {
+      setForm({
+        date: new Date().toISOString().split("T")[0],
+        amount: 0,
+        method: "",
+        category_id: 0,
+        title: "",
+        details: "",
+        processed: true,
+        type: "",
+      });
+      if (!addAnother) {
         setShowAddCategoryModal(false);
         setShowAddTransactionModal(false);
       }
