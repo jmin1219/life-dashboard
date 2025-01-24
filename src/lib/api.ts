@@ -41,30 +41,40 @@ export const postTransaction = async (
   }
 };
 
-export const putTransaction = async (transaction: TransactionType) => {
-  const res = await fetch(baseUrl + "/api/transactions", {
-    method: "PUT",
-    body: JSON.stringify(transaction),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!res.ok) throw new Error("Failed to update transaction");
-  return res.json();
+export const putTransaction = async (
+  id: number,
+  updatedTransaction: Omit<TransactionType, "id">,
+): Promise<TransactionType> => {
+  try {
+    const response = await fetch(baseUrl + "/api/transactions", {
+      method: "PUT",
+      body: JSON.stringify({ id, ...updatedTransaction }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) throw new Error("Failed to update transaction");
+    return response.json();
+  } catch (error) {
+    console.error("API Error: Failed to update transaction", error);
+    throw error;
+  }
 };
 
 export const deleteTransaction = async (id: number): Promise<void> => {
   try {
-    const res = await fetch(baseUrl + "/api/transactions", {
+    const response = await fetch(baseUrl + "/api/transactions", {
       method: "DELETE",
       body: JSON.stringify({ id }),
       headers: {
         "Content-Type": "application/json",
       },
     });
-    if (!res.ok) throw new Error("Failed to update transaction");
+
+    if (!response.ok) throw new Error("Failed to delete transaction");
+    return response.json();
   } catch (error) {
-    console.error("API Error: Failed to delete transaction.", error);
+    console.error("API Error: Failed to update transaction", error);
     throw error;
   }
 };

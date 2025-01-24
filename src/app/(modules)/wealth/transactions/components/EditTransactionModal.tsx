@@ -1,25 +1,25 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { useTransactions } from "../../context/TransactionsContext";
+import { TransactionType } from "../../types/Transaction";
+import { getTransactions, putTransaction } from "@/lib/api";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { CirclePlus as AddIcon } from "lucide-react";
-import { useState } from "react";
-import { useTransactions } from "@/app/(modules)/wealth/context/TransactionsContext";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import {
@@ -31,29 +31,22 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import AddCategoryModal from "./AddCategoryModal";
-import { useToast } from "@/hooks/use-toast";
-import { postTransaction } from "@/lib/api";
 
-const AddTransactionModal = () => {
-  // TODO: Fix Toast
-  const { toast } = useToast();
+const EditTransactionModal = ({
+  transaction,
+  open,
+  onClose,
+}: {
+  transaction: TransactionType;
+  open: boolean;
+  onClose: () => void;
+}) => {
   const { setTransactions, categories } = useTransactions();
-
-  const [showDatePopover, setShowDatePopover] = useState(false);
-  const [showAddTransactionModal, setShowAddTransactionModal] = useState(false);
-  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
 
-  const [form, setForm] = useState({
-    date: new Date().toISOString().split("T")[0],
-    amount: 0,
-    method: "",
-    category_id: 0,
-    title: "",
-    details: "",
-    processed: true,
-    type: "expense",
-  });
+  const [form, setForm] = useState(transaction);
 
   const [errors, setErrors] = useState({
     title: "",
@@ -87,6 +80,8 @@ const AddTransactionModal = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const [showDatePopover, setShowDatePopover] = useState(false);
+
   const handleDateChange = (date: Date | undefined) => {
     if (date) {
       const localDate = new Date(
@@ -102,40 +97,27 @@ const AddTransactionModal = () => {
     }
   };
 
-  const handleSubmit = async (addAnother: boolean = false) => {
+  const handleSubmit = async () => {
     if (!validateForm()) return;
 
     try {
       setIsLoading(true);
 
-      const newTransaction = await postTransaction(form);
-      setTransactions((prev) => [newTransaction, ...prev]);
+      await putTransaction(transaction.id, form);
+      setTransactions(await getTransactions());
 
       toast({
-        title: "Transaction Added!",
-        description: "Your transaction has been successfully added.",
+        title: "Transaction Updated",
+        description: "The transaction has been successfully updated.",
       });
 
-      setForm({
-        date: new Date().toISOString().split("T")[0],
-        amount: 0,
-        method: "",
-        category_id: 0,
-        title: "",
-        details: "",
-        processed: true,
-        type: "expense",
-      });
-      if (!addAnother) {
-        setShowAddCategoryModal(false);
-        setShowAddTransactionModal(false);
-      }
+      onClose();
     } catch (error) {
-      console.error("Error adding transaction:", error);
+      console.error("Error updating transaction:", error);
 
       toast({
         title: "Error",
-        description: "Failed to add the transaction. Please try again.",
+        description: "Failed to update transaction. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -144,34 +126,18 @@ const AddTransactionModal = () => {
   };
 
   return (
-    <Dialog
-      open={showAddTransactionModal}
-      onOpenChange={(isOpen) => {
-        setShowAddTransactionModal(isOpen);
-        if (!isOpen) {
-          setShowAddCategoryModal(false);
-        }
-      }}
-    >
-      <DialogTrigger asChild>
-        <div className="flex items-center justify-center rounded-xl border border-slate-600 p-0.5">
-          <Button variant="ghost" className="text-md m-0.5 rounded-[8px]">
-            <AddIcon />
-            <span className="hidden lg:block">Add Transaction</span>
-          </Button>
-        </div>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>New Transaction</DialogTitle>
+          <DialogTitle>Edit Transaction</DialogTitle>
           <DialogDescription>
-            Enter transaction details below.
+            Edit the details of the transaction.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           {/* Date */}
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="date" className="text-right">
+            <Label htmlFor="title" className="text-right">
               Date
             </Label>
             <Popover open={showDatePopover} onOpenChange={setShowDatePopover}>
@@ -202,15 +168,8 @@ const AddTransactionModal = () => {
               Title
             </Label>
             <Input
-              id="title"
-              value={form.title}
-              autoFocus
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  title: e.target.value,
-                })
-              }
+              value={form.title ?? ""}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
               className="col-span-3"
             />
             {errors.title && (
@@ -229,7 +188,7 @@ const AddTransactionModal = () => {
               onValueChange={(value) =>
                 setForm((prev) => ({ ...prev, type: value }))
               }
-              value={form.type}
+              value={form.type ?? ""}
             >
               <SelectTrigger className="col-span-3">
                 <SelectValue />
@@ -255,7 +214,7 @@ const AddTransactionModal = () => {
             <Input
               id="amount"
               className="col-span-3"
-              value={form.amount}
+              value={form.amount ?? ""}
               onChange={(e) =>
                 setForm((prev) => ({
                   ...prev,
@@ -386,40 +345,23 @@ const AddTransactionModal = () => {
           </div>
         </div>
         <DialogFooter>
-          <Button
-            type="submit"
-            variant="secondary"
-            onClick={() => handleSubmit(true)}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <span className="loader"></span>
-            ) : (
-              "Save & Add Another"
-            )}
-          </Button>
-          <Button
-            type="submit"
-            onClick={() => handleSubmit(false)}
-            disabled={isLoading}
-          >
-            {isLoading ? <span className="loader"></span> : "Add Transaction"}
+          <Button type="submit" onClick={handleSubmit} disabled={isLoading}>
+            {isLoading ? <span className="loader"></span> : "Edit Transaction"}
           </Button>
         </DialogFooter>
+        {/* Add Category Modal */}
+        {showAddCategoryModal && (
+          <AddCategoryModal
+            open={showAddCategoryModal}
+            onClose={() => setShowAddCategoryModal(false)}
+            onCategoryAdded={() => {
+              setShowAddCategoryModal(false);
+            }}
+          />
+        )}
       </DialogContent>
-
-      {/* Add Category Modal */}
-      {showAddCategoryModal && (
-        <AddCategoryModal
-          open={showAddCategoryModal}
-          onClose={() => setShowAddCategoryModal(false)}
-          onCategoryAdded={() => {
-            setShowAddCategoryModal(false);
-          }}
-        />
-      )}
     </Dialog>
   );
 };
 
-export default AddTransactionModal;
+export default EditTransactionModal;

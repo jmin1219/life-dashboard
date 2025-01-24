@@ -73,6 +73,50 @@ export const addTransactionToDB = (
   }
 };
 
+// Update a transaction by ID
+export const updateTransactionInDB = (
+  id: number,
+  updatedTransaction: Omit<TransactionType, "id">,
+) => {
+  try {
+    const {
+      title,
+      amount,
+      date,
+      type,
+      category_id,
+      method,
+      details,
+      processed,
+    } = updatedTransaction;
+
+    const result = db
+      .prepare(
+        `UPDATE transactions SET title = ?, amount = ?, date = ?, type = ?, category_id = ?, method = ?, details = ?, processed = ? WHERE id = ?`,
+      )
+      .run(
+        title,
+        amount,
+        date,
+        type,
+        category_id,
+        method,
+        details,
+        processed ? 1 : 0,
+        id,
+      );
+
+    if (result.changes === 0) {
+      throw new Error(`Transaction with ID ${id} not found.`);
+    }
+
+    return { id, ...updateTransactionInDB };
+  } catch (error) {
+    console.error("Database Error: Failed to update transaction", error);
+    throw new Error("Failed to update transaction in the database.");
+  }
+};
+
 // Delete a transaction
 export const deleteTransactionFromDB = (id: number): void => {
   try {

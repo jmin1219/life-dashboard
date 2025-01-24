@@ -2,6 +2,7 @@ import {
   addTransactionToDB,
   deleteTransactionFromDB,
   getAllTransactions,
+  updateTransactionInDB,
 } from "@/app/(modules)/wealth/db/queries";
 import { NextResponse } from "next/server";
 
@@ -41,8 +42,17 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
-    const updatedTransaction = updateTransactionInDB(body);
-    return NextResponse.json(updatedTransaction, { status: 200 });
+    const { id, ...updatedTransaction } = body;
+
+    if (!id || !updatedTransaction) {
+      return NextResponse.json(
+        { error: "Transaction ID and updated data are required." },
+        { status: 400 },
+      );
+    }
+
+    const updated = updateTransactionInDB(id, updatedTransaction);
+    return NextResponse.json(updated, { status: 200 });
   } catch (error) {
     console.error("Error updating transaction:", error);
     return new NextResponse("Failed to update transaction", { status: 500 });
@@ -60,9 +70,15 @@ export async function DELETE(req: Request) {
       );
     }
     deleteTransactionFromDB(id);
-    return new NextResponse("Transaction deleted", { status: 200 });
+    return NextResponse.json(
+      { message: "Transaction deleted" },
+      { status: 200 },
+    );
   } catch (error) {
     console.error("Error deleting transaction:", error);
-    return new NextResponse("Failed to delete transaction", { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to delete transaction." },
+      { status: 500 },
+    );
   }
 }

@@ -4,7 +4,8 @@ import {
   CategoryType,
   TransactionType,
 } from "@/app/(modules)/wealth/types/Transaction";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { getCategories, getTransactions } from "@/lib/api";
 
 type TransactionsContextType = {
   transactions: TransactionType[];
@@ -13,9 +14,7 @@ type TransactionsContextType = {
   setCategories: React.Dispatch<React.SetStateAction<CategoryType[]>>;
 };
 
-const TransactionsContext = createContext<TransactionsContextType | undefined>(
-  undefined,
-);
+const TransactionsContext = createContext<TransactionsContextType | null>(null);
 
 export const useTransactions = () => {
   const context = useContext(TransactionsContext);
@@ -29,17 +28,32 @@ export const useTransactions = () => {
 
 export const TransactionsProvider = ({
   children,
-  initialTransactions,
-  initialCategories,
 }: {
   children: React.ReactNode;
-  initialTransactions: TransactionType[];
-  initialCategories: CategoryType[];
 }) => {
-  const [transactions, setTransactions] =
-    useState<TransactionType[]>(initialTransactions);
-  const [categories, setCategories] =
-    useState<CategoryType[]>(initialCategories);
+  const [transactions, setTransactions] = useState<TransactionType[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const data = await getTransactions();
+        setTransactions(data);
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories", error);
+      }
+    };
+    fetchTransactions();
+    fetchCategories();
+  }, []);
 
   return (
     <TransactionsContext.Provider

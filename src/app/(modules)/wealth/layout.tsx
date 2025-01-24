@@ -1,7 +1,6 @@
 import React from "react";
 import ModuleNavbar from "@/components/ModuleNavbar";
 import { TransactionsProvider } from "@/app/(modules)/wealth/context/TransactionsContext";
-import { getAllCategories, getAllTransactions } from "./db/queries";
 
 const WealthLayout = async ({ children }: { children: React.ReactNode }) => {
   const wealthNavItems = [
@@ -11,14 +10,8 @@ const WealthLayout = async ({ children }: { children: React.ReactNode }) => {
     { name: "Investments", path: "/wealth/investments" },
   ];
 
-  const transactions = getAllTransactions();
-  const categories = getAllCategories();
-
   return (
-    <TransactionsProvider
-      initialTransactions={transactions}
-      initialCategories={categories}
-    >
+    <TransactionsProvider>
       <div className="flex h-full w-full flex-col text-gray-200">
         {/* HEADER */}
         <div className="flex flex-col">
