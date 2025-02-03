@@ -375,7 +375,7 @@ const AddTransactionModal = () => {
               id="processed"
               type="checkbox"
               checked={form.processed}
-              className="col-span-3"
+              className="col-span-3 h-5 w-5"
               onChange={(e) =>
                 setForm({
                   ...form,

@@ -1,45 +1,91 @@
--- -- ------------------ TRANSACTIONS TABLE SETUP ------------------
+-- -- -- ------------------ TRANSACTIONS TABLE SCHEMA ------------------
 
-CREATE TABLE IF NOT EXISTS transactions (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  title TEXT NOT NULL,
-  amount DECIMAL(10, 2) NOT NULL,
-  date DATE NOT NULL,
-  type TEXT NOT NULL CHECK (type IN ('expense', 'income', 'investment')),
-  category_id INTEGER NOT NULL,
-  method TEXT NOT NULL,
-  details TEXT DEFAULT NULL,
-  processed BOOLEAN DEFAULT TRUE,
-  FOREIGN KEY (category_id) REFERENCES categories (id)
-);
+-- CREATE TABLE transactions (
+--   id INTEGER PRIMARY KEY AUTOINCREMENT,
+--   date DATE NOT NULL,
+--   amount REAL NOT NULL CHECK (amount > 0),
+--   category_id INTEGER NOT NULL,
+--   type TEXT NOT NULL CHECK (type IN ('expense', 'income', 'investment', 'transfer')),
+--   method_id INTEGER DEFAULT NULL,
+--   title TEXT NOT NULL,
+--   details TEXT DEFAULT NULL,
+--   importance_level TEXT CHECK (importance_level IN ('essential', 'optional', 'unexpected but necessary')),
+--   FOREIGN KEY (category_id) REFERENCES categories(id),
+--   FOREIGN KEY (method_id) REFERENCES payment_methods(id) ON DELETE SET NULL
+-- );
 
--- -- ------------------ CATEGORIES TABLE SETUP ------------------
-CREATE TABLE IF NOT EXISTS categories (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL UNIQUE,
-  color TEXT NOT NULL
-);
-
--- -- Default categories and colors
--- INSERT INTO categories (name, color) VALUES
---   ('Groceries', '#FF5733'),
---   ('Dining', '#33FF57'),
---   ('Transportation', '#5733FF'),
---   ('Entertainment', '#FFD700');
+-- -- importance_level:
+-- -- •	essential → Must-have (e.g., rent, groceries, medical bills).
+-- -- •	unexpected but necessary → Unplanned but important (e.g., emergency expenses, car repair).
+-- -- •	optional → Non-essential (e.g., entertainment, luxury items).
 
 
 
+-- -- -- ------------------ TRANSACTIONS TABLE SCHEMA ------------------
 
--- DELETE FROM transactions;
--- DELETE FROM categories;
+-- CREATE TABLE scheduled_transactions (
+--   id INTEGER PRIMARY KEY AUTOINCREMENT,
+--   date DATE NOT NULL, -- When it should be processed
+--   amount REAL NOT NULL CHECK (amount > 0),
+--   category_id INTEGER NOT NULL,
+--   type TEXT NOT NULL CHECK (type IN ('expense', 'income', 'investment', 'transfer')),
+--   method_id INTEGER DEFAULT NULL,
+--   title TEXT NOT NULL,
+--   details TEXT DEFAULT NULL,
+--   recurrence TEXT CHECK (recurrence IN ('daily', 'weekly', 'monthly', 'yearly')),
+--   status TEXT CHECK (status IN ('pending', 'completed', 'canceled')) DEFAULT 'pending',
+--   FOREIGN KEY (category_id) REFERENCES categories(id),
+--   FOREIGN KEY (method_id) REFERENCES payment_methods(id) ON DELETE SET NULL
+-- );
 
 
--- INSERT INTO categories (name, color) VALUES
--- ("Subscriptions", "#FF5733"),
--- ("Transportation", "#33FF57"),
--- ("Entertainment", "#3357FF"),
--- ("Groceries", "#FF33A1"),
--- ("Dining Out", "#A133FF"),
--- ("Investments", "#33FFF5"),
--- ("Miscellaneous", "#FF8C33");
+
+-- -- -- ------------------ CATEGORIES TABLE SCHEMA ------------------
+-- CREATE TABLE categories (
+--   id INTEGER PRIMARY KEY AUTOINCREMENT,
+--   name TEXT NOT NULL UNIQUE,
+--   color TEXT NOT NULL
+-- );
+
+
+-- -- -- ------------------ PAYMENT METHODS TABLE SCHEMA ------------------
+-- CREATE TABLE payment_methods (
+--   id INTEGER PRIMARY KEY AUTOINCREMENT,
+--   name TEXT NOT NULL UNIQUE,
+--   account_number TEXT DEFAULT NULL
+-- );
+
+
+-- -- -- ------------------ BUDGET TABLE SCHEMA ------------------
+-- CREATE TABLE budgets (
+--   id INTEGER PRIMARY KEY AUTOINCREMENT,
+--   category_id INTEGER NOT NULL,
+--   limit_amount REAL NOT NULL CHECK (limit_amount > 0),
+--   period TEXT CHECK (period IN ('monthly', 'weekly', 'daily', 'yearly')),
+--   FOREIGN KEY (category_id) REFERENCES categories(id)
+-- );
+
+-- -- -- ------------------ INVESTMENTS TABLE SCHEMA ------------------
+-- CREATE TABLE investments (
+--   id INTEGER PRIMARY KEY AUTOINCREMENT,
+--   name TEXT NOT NULL,
+--   type TEXT NOT NULL,
+--   amount_invested REAL NOT NULL,
+--   current_value REAL NOT NULL,
+--   roi REAL GENERATED ALWAYS AS ((current_value - amount_invested) / amount_invested * 100) STORED,
+--   investment_date DATE NOT NULL,
+--   last_updated DATE DEFAULT CURRENT_DATE
+-- );
+
+
+-- -- -- ------------------ SAVINGS GOALS TABLE SCHEMA ------------------
+-- CREATE TABLE savings_goals (
+--   id INTEGER PRIMARY KEY AUTOINCREMENT,
+--   name TEXT NOT NULL,
+--   target_amount REAL NOT NULL CHECK (target_amount > 0),
+--   current_amount REAL DEFAULT 0,
+--   deadline DATE DEFAULT NULL,
+--   status TEXT CHECK (status IN ('in progress', 'compeleted', 'failed')) DEFAULT 'in progress'
+-- );
+
 

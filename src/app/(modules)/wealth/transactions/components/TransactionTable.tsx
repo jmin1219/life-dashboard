@@ -125,7 +125,7 @@ const TransactionTable = () => {
                 </TableCell>
                 {/* ACTIONS: EDIT OR DELETE */}
                 <TableCell className="whitespace-nowrap">
-                  <div className="flex gap-2">
+                  <div className="flex w-full justify-evenly">
                     {/* Edit Button */}
                     <div>
                       <Button
