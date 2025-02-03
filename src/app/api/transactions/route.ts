@@ -1,16 +1,13 @@
-import {
-  addTransactionToDB,
-  deleteTransactionFromDB,
-  getAllTransactions,
-  updateTransactionInDB,
-} from "@/app/(modules)/wealth/db/queries";
-import { NextResponse } from "next/server";
+import { db } from "@/db";
+import { transactions } from "@/db/schema";
+import { NextRequest, NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
 
 // Fetch All Transactions
 export async function GET() {
   try {
-    const transactions = getAllTransactions();
-    return NextResponse.json(transactions, { status: 200 });
+    const allTransactions = await db.select().from(transactions);
+    return NextResponse.json(allTransactions, { status: 200 });
   } catch (error) {
     console.error("Error fetching transactions:", error);
     return new NextResponse("Failed to fetch transactions", { status: 500 });
@@ -18,20 +15,48 @@ export async function GET() {
 }
 
 // Add a New Transaction
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const {
+      accountId,
+      categoryId,
+      type,
+      amount,
+      title,
+      description,
+      necessity,
+      date,
+    } = await req.json();
 
-    const { title, amount, date, type, category_id } = body;
-    if (!title || !amount || !date || !type || !category_id) {
+    if (
+      !title ||
+      !amount ||
+      !date ||
+      !type ||
+      !categoryId ||
+      !accountId ||
+      !necessity
+    ) {
       return NextResponse.json(
-        { error: "All field are required to create a transaction." },
+        { error: "All fields are required to create a transaction." },
         { status: 400 },
       );
     }
 
-    const newTransaction = addTransactionToDB(body);
-    return NextResponse.json(newTransaction, { status: 201 });
+    await db.insert(transactions).values({
+      accountId,
+      categoryId,
+      type,
+      amount,
+      title,
+      description,
+      necessity,
+      date,
+    });
+    return NextResponse.json(
+      { message: "Transaction added successfully" },
+      { status: 201 },
+    );
   } catch (error) {
     console.error("Error adding transaction:", error);
     return new NextResponse("Failed to add transaction", { status: 500 });
@@ -39,28 +64,43 @@ export async function POST(req: Request) {
 }
 
 // Update a Transaction
-export async function PUT(req: Request) {
+export async function PUT(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { id, ...updatedTransaction } = body;
+    const { id, ...updatedData } = await req.json();
 
-    if (!id || !updatedTransaction) {
+    const existingTransaction = db
+      .select()
+      .from(transactions)
+      .where(eq(transactions.id, id))
+      .get();
+
+    if (!existingTransaction) {
       return NextResponse.json(
-        { error: "Transaction ID and updated data are required." },
-        { status: 400 },
+        { error: "Transaction not found" },
+        { status: 404 },
       );
     }
 
-    const updated = updateTransactionInDB(id, updatedTransaction);
-    return NextResponse.json(updated, { status: 200 });
+    await db
+      .update(transactions)
+      .set(updatedData)
+      .where(eq(transactions.id, id));
+
+    return NextResponse.json(
+      { message: "Transaction updated successfully" },
+      { status: 200 },
+    );
   } catch (error) {
-    console.error("Error updating transaction:", error);
-    return new NextResponse("Failed to update transaction", { status: 500 });
+    console.error(error);
+    return NextResponse.json(
+      { error: "Failed to update transaction" },
+      { status: 500 },
+    );
   }
 }
 
 // Delete a Transaction
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
   try {
     const { id } = await req.json();
     if (!id) {
@@ -69,9 +109,9 @@ export async function DELETE(req: Request) {
         { status: 400 },
       );
     }
-    deleteTransactionFromDB(id);
+    await db.delete(transactions).where(eq(transactions.id, id));
     return NextResponse.json(
-      { message: "Transaction deleted" },
+      { message: "Transaction deleted successfully" },
       { status: 200 },
     );
   } catch (error) {

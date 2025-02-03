@@ -1,16 +1,16 @@
 import { db } from "@/db";
-import { categories } from "@/db/schema";
+import { investments } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const allCategories = await db.select().from(categories);
-    return NextResponse.json(allCategories, { status: 200 });
+    const allInvestments = await db.select().from(investments);
+    return NextResponse.json(allInvestments, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch categories" },
+      { error: "Failed to fetch investments" },
       { status: 500 },
     );
   }
@@ -18,24 +18,40 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, type, icon, color } = await req.json();
+    const {
+      accountId,
+      assetName,
+      assetType,
+      shares,
+      pricePerShare,
+      totalValue,
+      datePurchased,
+    } = await req.json();
 
-    if (!name || !type || !icon || !color) {
+    if (
+      !accountId ||
+      !assetName ||
+      !assetType ||
+      !shares ||
+      !pricePerShare ||
+      !totalValue ||
+      !datePurchased
+    ) {
       return NextResponse.json(
-        { error: "All fields are required to create an category." },
+        { error: "All fields are required to create an investment." },
         { status: 400 },
       );
     }
 
     return NextResponse.json(
-      { message: "Category added successfully" },
+      { message: "Investment added successfully" },
       { status: 201 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       {
-        error: "Failed to create category.",
+        error: "Failed to create investment.",
       },
       { status: 500 },
     );
@@ -46,23 +62,23 @@ export async function PUT(req: NextRequest) {
   try {
     const { id, ...udpatedData } = await req.json();
 
-    const existingCategory = db
+    const existingInvestment = db
       .select()
-      .from(categories)
-      .where(eq(categories.id, id))
+      .from(investments)
+      .where(eq(investments.id, id))
       .get();
-    if (!existingCategory) {
+    if (!existingInvestment) {
       return NextResponse.json(
-        { error: "Category not found" },
+        { error: "Investment not found" },
         { status: 404 },
       );
     }
 
-    await db.update(categories).set(udpatedData).where(eq(categories.id, id));
+    await db.update(investments).set(udpatedData).where(eq(investments.id, id));
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to update category" },
+      { error: "Failed to update investment" },
       { status: 500 },
     );
   }
@@ -71,16 +87,16 @@ export async function PUT(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   try {
     const { id } = await req.json();
-    await db.delete(categories).where(eq(categories.id, id));
+    await db.delete(investments).where(eq(investments.id, id));
 
     return NextResponse.json(
-      { message: "Category deleted successfully" },
+      { message: "Investment deleted successfully" },
       { status: 200 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to delete Category" },
+      { error: "Failed to delete Investment" },
       { status: 500 },
     );
   }
