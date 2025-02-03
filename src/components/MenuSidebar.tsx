@@ -3,7 +3,7 @@
 import {
   CircleDollarSign as WealthIcon,
   CircleUser as ProfileIcon,
-  Dumbbell as HealthIcon,
+  Dumbbell as FitnessIcon,
   LogOut as LogOutIcon,
   Settings as SettingsIcon,
   Sunrise as ProductivityIcon,
@@ -26,9 +26,9 @@ const menuItems = [
         href: "/wealth",
       },
       {
-        icon: <HealthIcon />,
-        label: "Health",
-        href: "/health",
+        icon: <FitnessIcon />,
+        label: "Fitness",
+        href: "/fitness",
       },
     ],
   },
