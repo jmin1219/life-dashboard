@@ -10,7 +10,6 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { useTransactions } from "@/app/(modules)/wealth/context/TransactionsContext";
 import { TransactionType } from "@/app/(modules)/wealth/types/Transaction";
 import { useState } from "react";
 import {
@@ -25,22 +24,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { deleteTransaction } from "@/lib/api";
 import EditTransactionModal from "./EditTransactionModal";
 
 const TransactionTable = () => {
-  const { transactions, setTransactions, categories } = useTransactions();
-
   const [selectedTransaction, setSelectedTransaction] =
     useState<TransactionType | null>(null);
-
-  if (!transactions || transactions.length === 0) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        No transactions available.
-      </div>
-    );
-  }
 
   const handleProcessTransaction = (transactionId: number) => {
     alert(`Processing ${transactionId}`);

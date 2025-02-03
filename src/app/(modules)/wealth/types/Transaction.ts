@@ -1,13 +1,18 @@
 export interface TransactionType {
-  id: number; // This is optional for new transactions
-  date: string; // Stored as YYYY-MM-DD
+  id: number;
+  date: number; // stored as UNIX timestamp
   amount: number;
-  method: string;
-  category_id: number; // Matches category_id in the database
+  categoryId: number;
   title: string;
-  details?: string;
-  processed: boolean;
-  type: string;
+  description?: string;
+  necessity: "essential" | "optional" | "unexpected but necessary";
+  type:
+    | "income"
+    | "expense"
+    | "investment_buy"
+    | "investment_sell"
+    | "transfer"
+    | "liability_payment";
 }
 
 export interface TransactionWithCategory extends TransactionType {
@@ -18,16 +23,22 @@ export interface TransactionWithCategory extends TransactionType {
 export interface CategoryType {
   id: number;
   name: string;
+  icon: string;
   color: string;
 }
 
 export interface TransactionForm {
-  date: string;
+  date: number;
   amount: number;
-  type: "expense" | "income" | "investment";
-  category_id: number;
+  type:
+    | "expense"
+    | "income"
+    | "investment_buy"
+    | "investment_sell"
+    | "transfer"
+    | "liability_payment";
+  categoryId: number;
   title: string;
-  method: string;
-  details?: string;
-  processed: boolean;
+  description?: string;
+  necessity: "essential" | "optional" | "unexpected but necessary";
 }

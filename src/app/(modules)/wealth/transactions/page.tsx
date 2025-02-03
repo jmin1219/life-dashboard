@@ -7,18 +7,13 @@ import TransactionTable from "./components/TransactionTable";
 import TransactionPieCharts from "./components/TransactionPieChart";
 import FiltersMenu from "./components/FiltersMenu";
 import AddTransactionModal from "./components/AddTransactionModal";
-import { useTransactions } from "@/app/(modules)/wealth/context/TransactionsContext";
 
 const TransactionsTab = () => {
-  const { transactions } = useTransactions();
+  const transactions = {};
 
-  const totalExpenses = transactions
-    .filter((t) => t.type === "expense")
-    .reduce((sum, t) => sum + t.amount, 0);
+  const totalExpenses = 0;
 
-  const totalIncome = transactions
-    .filter((t) => t.type === "income")
-    .reduce((sum, t) => sum + t.amount, 0);
+  const totalIncome = 0;
 
   return (
     <div className="flex h-full flex-col">

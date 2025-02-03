@@ -1,9 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useTransactions } from "../../context/TransactionsContext";
 import { TransactionType } from "../../types/Transaction";
-import { getTransactions, putTransaction } from "@/lib/api";
 import {
   Dialog,
   DialogContent,
@@ -41,7 +39,6 @@ const EditTransactionModal = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const { setTransactions, categories } = useTransactions();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);

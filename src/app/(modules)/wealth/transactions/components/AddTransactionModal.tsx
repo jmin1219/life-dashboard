@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { CirclePlus as AddIcon } from "lucide-react";
 import { useState } from "react";
-import { useTransactions } from "@/app/(modules)/wealth/context/TransactionsContext";
 import {
   Popover,
   PopoverContent,
@@ -32,12 +31,10 @@ import {
 import { Separator } from "@/components/ui/separator";
 import AddCategoryModal from "./AddCategoryModal";
 import { useToast } from "@/hooks/use-toast";
-import { postTransaction } from "@/lib/api";
 
 const AddTransactionModal = () => {
   // TODO: Fix Toast
   const { toast } = useToast();
-  const { setTransactions, categories } = useTransactions();
 
   const [showDatePopover, setShowDatePopover] = useState(false);
   const [showAddTransactionModal, setShowAddTransactionModal] = useState(false);
@@ -292,25 +289,7 @@ const AddTransactionModal = () => {
                 <SelectValue placeholder="Select a Category" />
               </SelectTrigger>
               <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem
-                    key={category.id}
-                    value={category.id ? category.id.toString() : ""}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="h-4 w-4 rounded-full"
-                        style={{ backgroundColor: category.color }}
-                      />
-                      <span
-                        className="font-medium"
-                        style={{ color: category.color }}
-                      >
-                        {category.name}
-                      </span>
-                    </div>
-                  </SelectItem>
-                ))}
+                {/* TODO: Import Categories based on type */}
                 <Separator />
                 <SelectItem key="add-new" value="add-new">
                   Add New Category

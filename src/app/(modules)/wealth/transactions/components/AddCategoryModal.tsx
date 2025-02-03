@@ -11,9 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useTransactions } from "@/app/(modules)/wealth/context/TransactionsContext";
 import { useToast } from "@/hooks/use-toast";
-import { postCategory } from "@/lib/api";
 import { useState } from "react";
 
 const AddCategoryModal = ({
@@ -25,7 +23,6 @@ const AddCategoryModal = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const { categories, setCategories } = useTransactions();
   const { toast } = useToast();
 
   const [form, setForm] = useState({

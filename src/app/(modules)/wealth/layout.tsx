@@ -1,6 +1,5 @@
 import React from "react";
 import ModuleNavbar from "@/components/ModuleNavbar";
-import { TransactionsProvider } from "@/app/(modules)/wealth/context/TransactionsContext";
 
 const WealthLayout = async ({ children }: { children: React.ReactNode }) => {
   const wealthNavItems = [
@@ -11,33 +10,29 @@ const WealthLayout = async ({ children }: { children: React.ReactNode }) => {
   ];
 
   return (
-    <TransactionsProvider>
-      <div className="flex h-full w-full flex-col text-gray-200">
-        {/* HEADER */}
-        <div className="flex flex-col">
-          {/* Net Worth Summary */}
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col">
-              <h2 className="text-foreground-muted text-md text-gray-500">
-                NET WORTH
-              </h2>
-              <span className="text-2xl font-bold tracking-wide">
-                ₩ 12,345,678
-              </span>
-              <span className="text-sm text-gray-500">
-                Updated: Jan 23, 2025
-              </span>
-            </div>
-            {/* Wealth Module Navbar */}
-            <div className="">
-              <ModuleNavbar navItems={wealthNavItems} />
-            </div>
+    <div className="flex h-full w-full flex-col text-gray-200">
+      {/* HEADER */}
+      <div className="flex flex-col">
+        {/* Net Worth Summary */}
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <h2 className="text-foreground-muted text-md text-gray-500">
+              NET WORTH
+            </h2>
+            <span className="text-2xl font-bold tracking-wide">
+              ₩ 12,345,678
+            </span>
+            <span className="text-sm text-gray-500">Updated: Jan 23, 2025</span>
+          </div>
+          {/* Wealth Module Navbar */}
+          <div className="">
+            <ModuleNavbar navItems={wealthNavItems} />
           </div>
         </div>
-
-        <main>{children}</main>
       </div>
-    </TransactionsProvider>
+
+      <main>{children}</main>
+    </div>
   );
 };
 
