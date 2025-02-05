@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { TransactionType } from "../types/TransactionType";
+import { TransactionWithCategory } from "../types/TransactionType";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/wealth/transactions`;
 
-// Make API call for all transactions
+// Make API call for all transactions with category details
 export const useFetchTransactions = () => {
-  return useQuery<TransactionType[]>({
+  return useQuery<TransactionWithCategory[]>({
     queryKey: ["transactions"],
-    queryFn: async (): Promise<TransactionType[]> => {
+    queryFn: async (): Promise<TransactionWithCategory[]> => {
       const res = await fetch(API_URL);
       if (!res.ok) {
         const errorMessage = await res.text();
@@ -22,7 +22,7 @@ export const useFetchTransactions = () => {
 export const useAddTransaction = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (transaction: TransactionType) => {
+    mutationFn: async (transaction: TransactionWithCategory) => {
       const res = await fetch(API_URL, {
         method: "POST",
         body: JSON.stringify(transaction),
@@ -37,7 +37,7 @@ export const useAddTransaction = () => {
     onSuccess: (newTransaction) => {
       queryClient.setQueryData(
         ["transactions"],
-        (oldTransactions: TransactionType[] = []) => [
+        (oldTransactions: TransactionWithCategory[] = []) => [
           newTransaction,
           ...oldTransactions,
         ],
@@ -54,7 +54,7 @@ export const useUpdateTransaction = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (transaction: TransactionType) => {
+    mutationFn: async (transaction: TransactionWithCategory) => {
       const res = await fetch(`${API_URL}/${transaction.id}`, {
         method: "PUT",
         body: JSON.stringify(transaction),
@@ -69,7 +69,7 @@ export const useUpdateTransaction = () => {
     onSuccess: (updatedTransaction) => {
       queryClient.setQueryData(
         ["transactions"],
-        (oldTransactions: TransactionType[] = []) =>
+        (oldTransactions: TransactionWithCategory[] = []) =>
           oldTransactions.map((t) =>
             t.id === updatedTransaction.id ? updatedTransaction : t,
           ),
@@ -89,6 +89,7 @@ export const useDeleteTransaction = () => {
     mutationFn: async (id: number) => {
       const res = await fetch(API_URL, {
         method: "DELETE",
+        body: JSON.stringify({ id }),
         headers: { "Content-Type": "application/json" },
       });
       if (!res.ok) {
@@ -100,7 +101,7 @@ export const useDeleteTransaction = () => {
     onSuccess: (_, id) => {
       queryClient.setQueryData(
         ["transactions"],
-        (oldTransactions: TransactionType[] = []) =>
+        (oldTransactions: TransactionWithCategory[] = []) =>
           oldTransactions.filter((t) => t.id != id),
       );
     },

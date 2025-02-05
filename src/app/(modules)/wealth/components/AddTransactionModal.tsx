@@ -31,10 +31,15 @@ import {
 import { Separator } from "@/components/ui/separator";
 import AddCategoryModal from "./AddCategoryModal";
 import { useToast } from "@/hooks/use-toast";
+import { useTransactions } from "../stores/useTransactionsStore";
+import { useAddTransaction } from "../queries/useTransactionsQuery";
 
 const AddTransactionModal = () => {
   // TODO: Fix Toast
   const { toast } = useToast();
+
+  const { addTransaction } = useTransactions();
+  const addTransactionMutation = useAddTransaction();
 
   const [showDatePopover, setShowDatePopover] = useState(false);
   const [showAddTransactionModal, setShowAddTransactionModal] = useState(false);

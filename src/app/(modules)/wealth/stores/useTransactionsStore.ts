@@ -1,13 +1,13 @@
-import { TransactionType } from "@/app/(modules)/wealth/types/TransactionType";
+import { TransactionWithCategory } from "@/app/(modules)/wealth/types/TransactionType";
 import { create } from "zustand";
 
 // Setting up Zustand store to manage transactions globally
 
 type TransactionsState = {
-  transactions: TransactionType[];
-  setTransactions: (transactions: TransactionType[]) => void;
-  addTransaction: (transaction: TransactionType) => void;
-  updateTransaction: (updatedTransaction: TransactionType) => void;
+  transactions: TransactionWithCategory[];
+  setTransactions: (transactions: TransactionWithCategory[]) => void;
+  addTransaction: (transaction: TransactionWithCategory) => void;
+  updateTransaction: (updatedTransaction: TransactionWithCategory) => void;
   deleteTransaction: (id: number) => void;
 };
 

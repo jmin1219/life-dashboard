@@ -6,7 +6,7 @@ import {
   useUpdateTransaction,
 } from "../queries/useTransactionsQuery";
 import { useTransactions } from "../stores/useTransactionsStore";
-import { TransactionType } from "../types/TransactionType";
+import { TransactionWithCategory } from "../types/TransactionType";
 
 export const useTransactionsHook = () => {
   const { data, isLoading, error } = useFetchTransactions();
@@ -22,18 +22,20 @@ export const useTransactionsHook = () => {
   const deleteTransaction = useDeleteTransaction();
 
   useEffect(() => {
-    if (data) setTransactions(data);
+    if (data) {
+      setTransactions(data);
+    }
   }, [data, setTransactions]);
 
   return {
     transactions: data || [],
     isLoading,
     error,
-    addTransaction: (transaction: TransactionType) => {
+    addTransaction: (transaction: TransactionWithCategory) => {
       addLocalTransaction(transaction);
       return addTransaction.mutateAsync(transaction);
     },
-    updateTransaction: (transaction: TransactionType) => {
+    updateTransaction: (transaction: TransactionWithCategory) => {
       updateLocalTransaction(transaction);
       return updateTransaction.mutateAsync(transaction);
     },

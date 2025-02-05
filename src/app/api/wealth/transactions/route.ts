@@ -1,13 +1,26 @@
 import { db } from "@/db";
-import { transactions } from "@/db/schema";
+import { categories, transactions } from "@/db/schema";
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 
 // Fetch All Transactions
 export async function GET() {
   try {
-    const allTransactions = await db.select().from(transactions);
-    return NextResponse.json(allTransactions, { status: 200 });
+    const fullTransactions = await db
+      .select({
+        id: transactions.id,
+        date: transactions.date,
+        title: transactions.title,
+        amount: transactions.amount,
+        type: transactions.type,
+        necessity: transactions.necessity,
+        category_name: categories.name,
+        category_color: categories.color,
+        category_icon: categories.icon,
+      })
+      .from(transactions)
+      .leftJoin(categories, eq(transactions.categoryId, categories.id));
+    return NextResponse.json(fullTransactions, { status: 200 });
   } catch (error) {
     console.error("Error fetching transactions:", error);
     return new NextResponse("Failed to fetch transactions", { status: 500 });

@@ -7,13 +7,19 @@ import TransactionTable from "../components/TransactionTable";
 import TransactionPieCharts from "../components/TransactionPieChart";
 import FiltersMenu from "../components/FiltersMenu";
 import AddTransactionModal from "../components/AddTransactionModal";
+import { useTransactionsHook } from "../hooks/useTransactionsHook";
 
 const TransactionsTab = () => {
-  const transactions = {};
+  // Fetch transactions from Zustand and TanStack Query
+  const { transactions, isLoading } = useTransactionsHook();
 
-  const totalExpenses = 0;
+  const totalExpenses = transactions
+    .filter((tx) => tx.type === "expense")
+    .reduce((sum, tx) => sum + tx.amount, 0);
 
-  const totalIncome = 0;
+  const totalIncome = transactions
+    .filter((tx) => tx.type === "income")
+    .reduce((sum, tx) => sum + tx.amount, 0);
 
   return (
     <div className="flex h-full flex-col">
@@ -59,7 +65,11 @@ const TransactionsTab = () => {
         {/* TRANSACTION TABLE */}
         <div className="w-3/4 flex-grow flex-col">
           <div className="overflow-y-auto">
-            <TransactionTable />
+            {isLoading ? (
+              <p className="text-center">Loading Transactions...</p>
+            ) : (
+              <TransactionTable />
+            )}
           </div>
         </div>
       </div>
