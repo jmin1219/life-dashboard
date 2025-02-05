@@ -6,7 +6,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { TransactionType } from "@/app/(modules)/wealth/types/Transaction";
+import { TransactionType } from "@/app/(modules)/wealth/types/TransactionType";
 import { Bar, BarChart, XAxis, CartesianGrid, YAxis } from "recharts";
 
 const TransactionBarChart = ({

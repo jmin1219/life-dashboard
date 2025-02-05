@@ -2,9 +2,7 @@
 
 import {
   CircleDollarSign as WealthIcon,
-  CircleUser as ProfileIcon,
   Dumbbell as FitnessIcon,
-  LogOut as LogOutIcon,
   Settings as SettingsIcon,
   Sunrise as ProductivityIcon,
 } from "lucide-react";
@@ -36,19 +34,9 @@ const menuItems = [
     group: "OTHER",
     items: [
       {
-        icon: <ProfileIcon />,
-        label: "Profile",
-        href: "/profile",
-      },
-      {
         icon: <SettingsIcon />,
         label: "Settings",
         href: "/settings",
-      },
-      {
-        icon: <LogOutIcon />,
-        label: "Logout",
-        href: "/logout",
       },
     ],
   },

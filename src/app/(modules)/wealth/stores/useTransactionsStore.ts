@@ -1,4 +1,4 @@
-import { TransactionType } from "@/app/(modules)/wealth/types/Transaction";
+import { TransactionType } from "@/app/(modules)/wealth/types/TransactionType";
 import { create } from "zustand";
 
 // Setting up Zustand store to manage transactions globally

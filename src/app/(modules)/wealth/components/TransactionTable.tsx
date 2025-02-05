@@ -10,7 +10,7 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { TransactionType } from "@/app/(modules)/wealth/types/Transaction";
+import { TransactionType } from "@/app/(modules)/wealth/types/TransactionType";
 import { useState } from "react";
 import {
   AlertDialog,

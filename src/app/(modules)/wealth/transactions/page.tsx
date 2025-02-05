@@ -1,12 +1,12 @@
 "use client";
 
-import DatePicker from "./components/DatePicker";
+import DatePicker from "../components/DatePicker";
 import { Separator } from "@/components/ui/separator";
-import TransactionBarChart from "./components/TransactionBarChart";
-import TransactionTable from "./components/TransactionTable";
-import TransactionPieCharts from "./components/TransactionPieChart";
-import FiltersMenu from "./components/FiltersMenu";
-import AddTransactionModal from "./components/AddTransactionModal";
+import TransactionBarChart from "../components/TransactionBarChart";
+import TransactionTable from "../components/TransactionTable";
+import TransactionPieCharts from "../components/TransactionPieChart";
+import FiltersMenu from "../components/FiltersMenu";
+import AddTransactionModal from "../components/AddTransactionModal";
 
 const TransactionsTab = () => {
   const transactions = {};
