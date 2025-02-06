@@ -27,10 +27,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json(
-      { message: "Category added successfully" },
-      { status: 201 },
-    );
+    const result = await db
+      .insert(categories)
+      .values({ name, type, icon, color })
+      .returning();
+
+    return NextResponse.json(result[0], { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(

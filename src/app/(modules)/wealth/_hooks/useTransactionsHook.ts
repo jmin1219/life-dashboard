@@ -4,6 +4,7 @@ import {
 } from "../_queries/useTransactionsQuery";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { TransactionType } from "../_types/TransactionType";
 
 export const useTransactionsHook = () => {
   const queryClient = useQueryClient();
@@ -13,7 +14,7 @@ export const useTransactionsHook = () => {
     data: transactions,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<TransactionType[]>({
     queryKey: ["transactions"],
     queryFn: fetchTransactionsAPI,
     staleTime: 60 * 1000, // Data stays fresh for 1 min

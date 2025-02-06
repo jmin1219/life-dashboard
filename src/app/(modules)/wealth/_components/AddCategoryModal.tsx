@@ -16,7 +16,7 @@ import { useState } from "react";
 import {
   useAddCategory,
   useFetchCategories,
-} from "../_queries/useCategoriesQuery";
+} from "../_hooks/useCategoriesHook";
 
 const AddCategoryModal = ({
   open,
@@ -43,7 +43,6 @@ const AddCategoryModal = ({
         description: "Category name is required.",
         variant: "destructive",
       });
-
       return;
     }
     if (

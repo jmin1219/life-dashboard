@@ -2,7 +2,7 @@ export interface TransactionType {
   id?: number;
   date: string; // use ISO string format (YYYY-MM-DD)
   amount: number;
-  categoryId: number;
+  categoryId: number | null;
   title: string;
   description?: string;
   necessity: "essential" | "optional" | "unexpected but necessary";

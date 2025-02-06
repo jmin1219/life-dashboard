@@ -40,7 +40,7 @@ const AddTransactionModal = () => {
 
   const { addTransaction } = useTransactionsHook();
 
-  const [isModaleOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDatePopover, setShowDatePopover] = useState(false);
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +48,7 @@ const AddTransactionModal = () => {
   const [form, setForm] = useState({
     date: new Date().toISOString().split("T")[0],
     amount: 0,
-    categoryId: 0,
+    categoryId: null,
     title: "",
     description: "",
     necessity: "optional" as
@@ -66,7 +66,7 @@ const AddTransactionModal = () => {
 
   const validateForm = () => {
     if (!form.title)
-      return toast({ title: "Title is requried", variant: "destructive" });
+      return toast({ title: "Title is required", variant: "destructive" });
     if (form.amount <= 0)
       return toast({
         title: "Amount must be greater than 0",
@@ -110,7 +110,7 @@ const AddTransactionModal = () => {
       setForm({
         date: new Date().toISOString().split("T")[0],
         amount: 0,
-        categoryId: 0,
+        categoryId: null,
         title: "",
         description: "",
         type: "expense",
@@ -133,7 +133,7 @@ const AddTransactionModal = () => {
   };
 
   return (
-    <Dialog open={isModaleOpen} onOpenChange={setIsModalOpen}>
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
         <div className="flex items-center justify-center rounded-xl border border-slate-600 p-0.5">
           <Button variant="ghost" className="text-md m-0.5 rounded-[8px]">

@@ -1,8 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  TransactionType,
-  TransactionWithCategoryType,
-} from "../_types/TransactionType";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { TransactionType } from "../_types/TransactionType";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/wealth/transactions`;
 
