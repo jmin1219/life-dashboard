@@ -17,9 +17,17 @@ export const useAddCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: addCategoryAPI,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] }); // refresh category list
+    mutationFn: (category: Omit<CategoryType, "id">) =>
+      addCategoryAPI(category),
+    onSuccess: (newCategory) => {
+      queryClient.setQueryData(
+        ["categories"],
+        (oldCategories: CategoryType[]) => [
+          ...(oldCategories || []),
+          newCategory,
+        ],
+      ); // refresh category list
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
   });
 };

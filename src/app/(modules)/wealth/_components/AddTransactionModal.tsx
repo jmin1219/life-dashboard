@@ -31,37 +31,35 @@ import {
 import { Separator } from "@/components/ui/separator";
 import AddCategoryModal from "./AddCategoryModal";
 import { useToast } from "@/hooks/use-toast";
-import { useTransactionsUIStore } from "../_stores/useTransactionsStore";
 import { useTransactionsHook } from "../_hooks/useTransactionsHook";
+import { CategoryType } from "../_types/CategoryType";
+import {
+  useAddCategory,
+  useFetchCategories,
+} from "../_hooks/useCategoriesHook";
+import { TransactionFormType } from "../_types/TransactionType";
 
 const AddTransactionModal = () => {
-  // TODO: Fix Toast
   const { toast } = useToast();
 
   const { addTransaction } = useTransactionsHook();
+  const addCategoryMutation = useAddCategory();
+  const { data: categories = [], isLoading: isCategoryLoading } =
+    useFetchCategories();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDatePopover, setShowDatePopover] = useState(false);
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<TransactionFormType>({
     date: new Date().toISOString().split("T")[0],
     amount: 0,
     categoryId: null,
     title: "",
     description: "",
-    necessity: "optional" as
-      | "essential"
-      | "optional"
-      | "unexpected but necessary",
-    type: "expense" as
-      | "income"
-      | "expense"
-      | "investment_buy"
-      | "investment_sell"
-      | "transfer"
-      | "liability_payment",
+    necessity: "optional",
+    type: "expense",
   });
 
   const validateForm = () => {
@@ -93,6 +91,14 @@ const AddTransactionModal = () => {
       }));
       setShowDatePopover(false);
     }
+  };
+
+  const handleCategoryAdded = async (newCategory: CategoryType) => {
+    setForm((prev) => ({
+      ...prev,
+      categoryId: newCategory.id,
+    }));
+    setShowAddCategoryModal(false);
   };
 
   const handleSubmit = async (addAnother: boolean = false) => {
@@ -206,13 +212,7 @@ const AddTransactionModal = () => {
               onValueChange={(value) =>
                 setForm((prev) => ({
                   ...prev,
-                  type: value as
-                    | "income"
-                    | "expense"
-                    | "investment_buy"
-                    | "investment_sell"
-                    | "transfer"
-                    | "liability_payment",
+                  type: value as TransactionFormType["type"],
                 }))
               }
               value={form.type}
@@ -272,10 +272,24 @@ const AddTransactionModal = () => {
               value={form.categoryId ? form.categoryId.toString() : ""}
             >
               <SelectTrigger className="col-span-3">
-                <SelectValue placeholder="Select a Category" />
+                <SelectValue
+                  placeholder={
+                    isCategoryLoading ? "Loading..." : "Select a Category"
+                  }
+                />
               </SelectTrigger>
               <SelectContent>
-                {/* TODO: Import Categories based on type */}
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id.toString()}>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="h-4 w-4 rounded-full"
+                        style={{ backgroundColor: category.color }}
+                      ></div>
+                      {category.name}
+                    </div>
+                  </SelectItem>
+                ))}
                 <Separator />
                 <SelectItem key="add-new" value="add-new">
                   Add New Category
@@ -330,9 +344,7 @@ const AddTransactionModal = () => {
         <AddCategoryModal
           open={showAddCategoryModal}
           onClose={() => setShowAddCategoryModal(false)}
-          onCategoryAdded={() => {
-            setShowAddCategoryModal(false);
-          }}
+          onCategoryAdded={handleCategoryAdded}
         />
       )}
     </Dialog>

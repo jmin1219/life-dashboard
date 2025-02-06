@@ -17,13 +17,23 @@ import {
   useAddCategory,
   useFetchCategories,
 } from "../_hooks/useCategoriesHook";
+import { CategoryType } from "../_types/CategoryType";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const AddCategoryModal = ({
   open,
   onClose,
+  onCategoryAdded,
 }: {
   open: boolean;
   onClose: () => void;
+  onCategoryAdded: (newCategory: CategoryType) => void;
 }) => {
   const { toast } = useToast();
   const addCategoryMutation = useAddCategory();
@@ -56,7 +66,8 @@ const AddCategoryModal = ({
       return;
     }
     try {
-      await addCategoryMutation.mutateAsync(form);
+      const newCategory = await addCategoryMutation.mutateAsync(form);
+      onCategoryAdded(newCategory);
 
       toast({
         title: "Category Created",
@@ -109,12 +120,23 @@ const AddCategoryModal = ({
             <Label htmlFor="type" className="text-right font-medium">
               Type
             </Label>
-            <Input
-              id="type"
+            <Select
+              onValueChange={(value) =>
+                setForm((prev) => ({
+                  ...prev,
+                  type: value,
+                }))
+              }
               value={form.type}
-              onChange={(e) => setForm({ ...form, type: e.target.value })}
-              className="col-span-3"
-            />
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder="Select a Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="expense">Expense</SelectItem>
+                <SelectItem value="income">Income</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="icon" className="text-right font-medium">
