@@ -2,9 +2,10 @@ CREATE TABLE `accounts` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
 	`type` text NOT NULL,
+	`color` text NOT NULL,
 	`balance` real DEFAULT 0 NOT NULL,
 	`currency` text DEFAULT 'KRW' NOT NULL,
-	`created_at` integer DEFAULT strftime('%s', 'now') NOT NULL
+	`created_at` text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `budgets` (
@@ -12,7 +13,7 @@ CREATE TABLE `budgets` (
 	`category_id` integer NOT NULL,
 	`amount` real NOT NULL,
 	`period` text DEFAULT 'monthly' NOT NULL,
-	`created_at` integer DEFAULT strftime('%s', 'now') NOT NULL,
+	`created_at` text NOT NULL,
 	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
@@ -32,7 +33,7 @@ CREATE TABLE `investments` (
 	`shares` real DEFAULT 0 NOT NULL,
 	`price_per_share` real DEFAULT 0 NOT NULL,
 	`total_value` real DEFAULT 0 NOT NULL,
-	`date_purchased` integer NOT NULL,
+	`date_purchased` text NOT NULL,
 	FOREIGN KEY (`account_id`) REFERENCES `accounts`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
@@ -41,7 +42,7 @@ CREATE TABLE `net_worth_logs` (
 	`total_assets` real NOT NULL,
 	`total_liabilities` real NOT NULL,
 	`net_worth` real NOT NULL,
-	`date` integer DEFAULT strftime('%s', 'now') NOT NULL
+	`date` text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `recurring_transactions` (
@@ -53,11 +54,11 @@ CREATE TABLE `recurring_transactions` (
 	`title` text NOT NULL,
 	`description` text,
 	`necessity` text NOT NULL,
-	`start_date` integer NOT NULL,
+	`start_date` text NOT NULL,
 	`frequency` text NOT NULL,
 	`next_occurrence` integer NOT NULL,
-	`end_date` integer,
-	`created_at` integer DEFAULT strftime('%s', 'now') NOT NULL,
+	`end_date` text,
+	`created_at` text NOT NULL,
 	FOREIGN KEY (`account_id`) REFERENCES `accounts`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE set null
 );
@@ -71,7 +72,7 @@ CREATE TABLE `transactions` (
 	`title` text NOT NULL,
 	`description` text,
 	`necessity` text NOT NULL,
-	`date` integer DEFAULT strftime('%s', 'now') NOT NULL,
+	`date` text NOT NULL,
 	FOREIGN KEY (`account_id`) REFERENCES `accounts`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE set null
 );

@@ -1,16 +1,14 @@
 import { sqliteTable, integer, text, real } from "drizzle-orm/sqlite-core";
-import { sql } from "drizzle-orm";
 
 // ------------------- WEALTH MODULE -------------------
 export const accounts = sqliteTable("accounts", {
   id: integer("id").primaryKey(),
   name: text("name").notNull(),
   type: text("type").notNull(),
+  color: text("color").notNull(),
   balance: real("balance").notNull().default(0),
   currency: text("currency").notNull().default("KRW"),
-  createdAt: integer("created_at")
-    .notNull()
-    .default(sql`(strftime('%s', 'now'))`),
+  createdAt: text("created_at").notNull(),
 });
 
 export const categories = sqliteTable("categories", {
@@ -45,9 +43,7 @@ export const transactions = sqliteTable("transactions", {
   necessity: text("necessity")
     .notNull()
     .$type<"essential" | "optional" | "unexpected but necessary">(),
-  date: integer("date")
-    .notNull()
-    .default(sql`(strftime('%s', 'now'))`),
+  date: text("date").notNull(),
 });
 
 export const recurringTransactions = sqliteTable("recurring_transactions", {
@@ -74,15 +70,13 @@ export const recurringTransactions = sqliteTable("recurring_transactions", {
   necessity: text("necessity")
     .notNull()
     .$type<"essential" | "optional" | "unexpected but necessary">(),
-  startDate: integer("start_date").notNull(),
+  startDate: text("start_date").notNull(),
   frequency: text("frequency")
     .notNull()
     .$type<"daily" | "weekly" | "monthly" | "yearly">(),
   nextOccurrence: integer("next_occurrence").notNull(),
-  endDate: integer("end_date"),
-  createdAt: integer("created_at")
-    .notNull()
-    .default(sql`(strftime('%s', 'now'))`),
+  endDate: text("end_date"),
+  createdAt: text("created_at").notNull(),
 });
 
 export const budgets = sqliteTable("budgets", {
@@ -95,9 +89,7 @@ export const budgets = sqliteTable("budgets", {
     .notNull()
     .default("monthly")
     .$type<"monthly" | "weekly">(),
-  createdAt: integer("created_at")
-    .notNull()
-    .default(sql`(strftime('%s', 'now'))`), // UNIX timestamp
+  createdAt: text("created_at").notNull(),
 });
 
 export const investments = sqliteTable("investments", {
@@ -110,7 +102,7 @@ export const investments = sqliteTable("investments", {
   shares: real("shares").notNull().default(0),
   pricePerShare: real("price_per_share").notNull().default(0),
   totalValue: real("total_value").notNull().default(0),
-  datePurchased: integer("date_purchased").notNull(),
+  datePurchased: text("date_purchased").notNull(),
 });
 
 export const netWorthLogs = sqliteTable("net_worth_logs", {
@@ -118,9 +110,7 @@ export const netWorthLogs = sqliteTable("net_worth_logs", {
   totalAssets: real("total_assets").notNull(),
   totalLiabilities: real("total_liabilities").notNull(),
   netWorth: real("net_worth").notNull(),
-  date: integer("date")
-    .notNull()
-    .default(sql`(strftime('%s', 'now'))`), // UNIX timestamp
+  date: text("date").notNull(),
 });
 
 // ------------------- FITNESS MODULE -------------------

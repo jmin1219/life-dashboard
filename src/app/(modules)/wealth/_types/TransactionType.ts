@@ -14,6 +14,7 @@ export type TransactionNecessityEnum =
 export interface TransactionType {
   id?: number;
   date: string; // use ISO string format (YYYY-MM-DD)
+  accountId: number;
   amount: number;
   categoryId: number | null;
   title: string;
@@ -31,6 +32,7 @@ export interface TransactionWithCategoryType extends TransactionType {
 export interface TransactionFormType {
   date: string; // use ISO string format (YYYY-MM-DD)
   amount: number;
+  accountId: number | null;
   categoryId: number | null;
   title: string;
   description?: string;

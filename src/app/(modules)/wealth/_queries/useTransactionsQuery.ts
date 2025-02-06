@@ -1,5 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { TransactionType } from "../_types/TransactionType";
+import {
+  TransactionFormType,
+  TransactionType,
+} from "../_types/TransactionType";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/wealth/transactions`;
 
@@ -11,11 +14,11 @@ export const fetchTransactionsAPI = async () => {
 };
 
 // Add a transaction
-export const addTransactionAPI = async (transaction: TransactionType) => {
+export const addTransactionAPI = async (transaction: TransactionFormType) => {
   const res = await fetch(API_URL, {
     method: "POST",
     body: JSON.stringify(transaction),
-    headers: { "Content-Type": "applications/json" },
+    headers: { "Content-Type": "application/json" },
   });
   if (!res.ok) throw new Error("Failed to add transaction");
   return res.json();

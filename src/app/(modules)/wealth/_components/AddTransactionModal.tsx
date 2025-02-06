@@ -38,14 +38,16 @@ import {
   useFetchCategories,
 } from "../_hooks/useCategoriesHook";
 import { TransactionFormType } from "../_types/TransactionType";
+import { useFetchAccounts } from "../_hooks/useAccountsHooks";
 
 const AddTransactionModal = () => {
   const { toast } = useToast();
 
   const { addTransaction } = useTransactionsHook();
-  const addCategoryMutation = useAddCategory();
   const { data: categories = [], isLoading: isCategoryLoading } =
     useFetchCategories();
+  const { data: accounts = [], isLoading: isAccountLoading } =
+    useFetchAccounts();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDatePopover, setShowDatePopover] = useState(false);
@@ -55,6 +57,7 @@ const AddTransactionModal = () => {
   const [form, setForm] = useState<TransactionFormType>({
     date: new Date().toISOString().split("T")[0],
     amount: 0,
+    accountId: null,
     categoryId: null,
     title: "",
     description: "",
@@ -116,6 +119,7 @@ const AddTransactionModal = () => {
       setForm({
         date: new Date().toISOString().split("T")[0],
         amount: 0,
+        accountId: null,
         categoryId: null,
         title: "",
         description: "",
@@ -207,7 +211,6 @@ const AddTransactionModal = () => {
             <Label htmlFor="type" className="text-right">
               Type
             </Label>
-            {/* TODO: Select Dropdown */}
             <Select
               onValueChange={(value) =>
                 setForm((prev) => ({
@@ -253,6 +256,44 @@ const AddTransactionModal = () => {
             />
           </div>
 
+          {/* Account Dropdown */}
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="account" className="text-right">
+              Account
+            </Label>
+            <Select
+              onValueChange={(value) => {
+                setForm((prev) => ({
+                  ...prev,
+                  accountId: parseInt(value, 10),
+                }));
+              }}
+              value={form.accountId ? form.accountId.toString() : ""}
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue
+                  placeholder={
+                    isAccountLoading ? "Loading..." : "Select a Account"
+                  }
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {accounts.map((account) => (
+                  <SelectItem key={account.id} value={account.id.toString()}>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="h-4 w-4 rounded-full"
+                        style={{ backgroundColor: account.color }}
+                      ></div>
+                      {account.name}
+                    </div>
+                  </SelectItem>
+                ))}
+                <Separator />
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* Category Dropdown */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="category" className="text-right">
@@ -271,6 +312,7 @@ const AddTransactionModal = () => {
               }}
               value={form.categoryId ? form.categoryId.toString() : ""}
             >
+              {/* Category List should be filtered by the Type if not empty */}
               <SelectTrigger className="col-span-3">
                 <SelectValue
                   placeholder={
@@ -301,7 +343,7 @@ const AddTransactionModal = () => {
           {/* Description */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="details" className="text-right">
-              Details
+              Description
             </Label>
             <Input
               id="method"
@@ -314,6 +356,33 @@ const AddTransactionModal = () => {
                 })
               }
             />
+          </div>
+
+          {/* Necessity */}
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="necessity" className="text-right">
+              Necessity
+            </Label>
+            <Select
+              onValueChange={(value) =>
+                setForm((prev) => ({
+                  ...prev,
+                  necessity: value as TransactionFormType["necessity"],
+                }))
+              }
+              value={form.necessity}
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="essential">Essential</SelectItem>
+                <SelectItem value="optional">Optional</SelectItem>
+                <SelectItem value="unexpected but necessary">
+                  Unexpected But Necessary
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <DialogFooter>
