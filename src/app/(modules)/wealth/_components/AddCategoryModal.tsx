@@ -13,49 +13,58 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import {
+  useAddCategory,
+  useFetchCategories,
+} from "../_queries/useCategoriesQuery";
 
 const AddCategoryModal = ({
-  onCategoryAdded,
   open,
   onClose,
 }: {
-  onCategoryAdded: () => void;
   open: boolean;
   onClose: () => void;
 }) => {
   const { toast } = useToast();
+  const addCategoryMutation = useAddCategory();
+  const { data: categories = [] } = useFetchCategories();
 
   const [form, setForm] = useState({
     name: "",
     color: "#FFFFFF",
+    icon: "",
+    type: "",
   });
 
   const handleSubmit = async () => {
     if (form.name.trim() === "") {
-      alert("Category name is required");
+      toast({
+        title: "Error",
+        description: "Category name is required.",
+        variant: "destructive",
+      });
+
       return;
     }
     if (
       categories.some((c) => c.name.toLowerCase() === form.name.toLowerCase())
     ) {
-      alert("Category already exists.");
+      toast({
+        title: "Error",
+        description: "Category already exists.",
+        variant: "destructive",
+      });
       return;
     }
     try {
-      const newCategory = await postCategory({
-        name: form.name.trim(),
-        color: form.color,
-      });
-
-      setCategories((prev) => [...prev, newCategory]);
-
-      setForm({ name: "", color: "#FFFFFF" });
-      onCategoryAdded();
+      await addCategoryMutation.mutateAsync(form);
 
       toast({
         title: "Category Created",
-        description: `Category "${newCategory.name}" was created successfully.`,
+        description: `Category "${form.name}" was added.`,
       });
+
+      setForm({ name: "", color: "#FFFFFF", icon: "", type: "" });
       onClose();
     } catch (error) {
       console.error("Error adding category:", error);
@@ -95,6 +104,28 @@ const AddCategoryModal = ({
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               className="col-span-3"
               placeholder="Category Name"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="type" className="text-right font-medium">
+              Type
+            </Label>
+            <Input
+              id="type"
+              value={form.type}
+              onChange={(e) => setForm({ ...form, type: e.target.value })}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="icon" className="text-right font-medium">
+              Icon
+            </Label>
+            <Input
+              id="icon"
+              value={form.icon}
+              onChange={(e) => setForm({ ...form, icon: e.target.value })}
+              className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">

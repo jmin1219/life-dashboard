@@ -1,4 +1,4 @@
-import { RecurringTransactionType } from "@/app/(modules)/wealth/types/RecurringTransactionType";
+import { RecurringTransactionType } from "@/app/(modules)/wealth/_types/RecurringTransactionType";
 import { create } from "zustand";
 
 // Setting up Zustand store to manage recurringTransactions globally

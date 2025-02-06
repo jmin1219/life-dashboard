@@ -1,8 +1,8 @@
 "use client";
 
 import { JSX } from "react";
-import { useTransactionsHook } from "../hooks/useTransactionsHook";
-import { TransactionWithCategory } from "../types/TransactionType";
+import { useTransactionsHook } from "../_hooks/useTransactionsHook";
+import { TransactionWithCategoryType } from "../_types/TransactionType";
 import WealthTable from "./WealthTable";
 
 const TransactionTable = () => {
@@ -15,7 +15,7 @@ const TransactionTable = () => {
     {
       key: "category_name",
       label: "CATEGORY",
-      render: (row: TransactionWithCategory) => (
+      render: (row: TransactionWithCategoryType) => (
         <div className="flex items-center">
           <span
             className="mr-2 h-4 w-4 rounded-full"
@@ -28,16 +28,16 @@ const TransactionTable = () => {
     { key: "type", label: "TYPE" },
     { key: "necessity", label: "NECESSITY" },
   ] as Array<{
-    key: keyof TransactionWithCategory;
+    key: keyof TransactionWithCategoryType;
     label: string;
-    render?: (row: TransactionWithCategory) => JSX.Element | string;
+    render?: (row: TransactionWithCategoryType) => JSX.Element | string;
   }>;
 
   if (isLoading) return <p>Loading transactions...</p>;
   if (error) return <p className="text-red-500">Error loading transactions.</p>;
 
   return (
-    <WealthTable<TransactionWithCategory>
+    <WealthTable<TransactionWithCategoryType>
       columns={transactionColumns}
       data={transactions}
     />

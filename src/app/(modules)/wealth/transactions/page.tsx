@@ -1,13 +1,13 @@
 "use client";
 
-import DatePicker from "../components/DatePicker";
+import DatePicker from "../_components/DatePicker";
 import { Separator } from "@/components/ui/separator";
-import TransactionBarChart from "../components/TransactionBarChart";
-import TransactionTable from "../components/TransactionTable";
-import TransactionPieCharts from "../components/TransactionPieChart";
-import FiltersMenu from "../components/FiltersMenu";
-import AddTransactionModal from "../components/AddTransactionModal";
-import { useTransactionsHook } from "../hooks/useTransactionsHook";
+import TransactionBarChart from "../_components/TransactionBarChart";
+import TransactionTable from "../_components/TransactionTable";
+import TransactionPieCharts from "../_components/TransactionPieChart";
+import FiltersMenu from "../_components/FiltersMenu";
+import AddTransactionModal from "../_components/AddTransactionModal";
+import { useTransactionsHook } from "../_hooks/useTransactionsHook";
 
 const TransactionsTab = () => {
   // Fetch transactions from Zustand and TanStack Query

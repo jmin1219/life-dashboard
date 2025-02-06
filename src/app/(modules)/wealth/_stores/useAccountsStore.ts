@@ -1,4 +1,4 @@
-import { AccountType } from "@/app/(modules)/wealth/types/AccountType";
+import { AccountType } from "@/app/(modules)/wealth/_types/AccountType";
 import { create } from "zustand";
 
 // Setting up Zustand store to manage accounts globally

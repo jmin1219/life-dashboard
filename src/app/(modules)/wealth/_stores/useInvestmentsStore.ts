@@ -1,4 +1,4 @@
-import { InvestmentType } from "@/app/(modules)/wealth/types/InvestmentType";
+import { InvestmentType } from "@/app/(modules)/wealth/_types/InvestmentType";
 import { create } from "zustand";
 
 // Setting up Zustand store to manage investments globally

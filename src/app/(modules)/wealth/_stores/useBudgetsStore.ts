@@ -1,4 +1,4 @@
-import { BudgetType } from "@/app/(modules)/wealth/types/BudgetType";
+import { BudgetType } from "@/app/(modules)/wealth/_types/BudgetType";
 import { create } from "zustand";
 
 // Setting up Zustand store to manage budgets globally

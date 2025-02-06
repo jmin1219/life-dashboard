@@ -1,8 +1,8 @@
 export interface TransactionType {
-  id: number;
-  date: number; // stored as UNIX timestamp
+  id?: number;
+  date: string; // use ISO string format (YYYY-MM-DD)
   amount: number;
-  categoryId?: number;
+  categoryId: number;
   title: string;
   description?: string;
   necessity: "essential" | "optional" | "unexpected but necessary";
@@ -15,7 +15,7 @@ export interface TransactionType {
     | "liability_payment";
 }
 
-export interface TransactionWithCategory extends TransactionType {
+export interface TransactionWithCategoryType extends TransactionType {
   category_name: string;
   category_color: string;
   category_icon: string;
