@@ -33,10 +33,7 @@ import AddCategoryModal from "./AddCategoryModal";
 import { useToast } from "@/hooks/use-toast";
 import { useTransactionsHook } from "../_hooks/useTransactionsHook";
 import { CategoryType } from "../_types/CategoryType";
-import {
-  useAddCategory,
-  useFetchCategories,
-} from "../_hooks/useCategoriesHook";
+import { useFetchCategories } from "../_hooks/useCategoriesHook";
 import { TransactionFormType } from "../_types/TransactionType";
 import { useFetchAccounts } from "../_hooks/useAccountsHooks";
 

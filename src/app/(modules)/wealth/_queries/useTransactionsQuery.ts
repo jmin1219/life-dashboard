@@ -2,13 +2,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   TransactionFormType,
   TransactionType,
+  TransactionWithCategoryType,
 } from "../_types/TransactionType";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/wealth/transactions`;
 
 // Make API call for all transactions with category details
-export const fetchTransactionsAPI = async () => {
-  const res = await fetch(API_URL);
+export const fetchTransactionsAPI = async (): Promise<
+  TransactionWithCategoryType[]
+> => {
+  const res = await fetch(API_URL); // Transactions with Category Details
   if (!res.ok) throw new Error("Failed to fetch transactions");
   return res.json();
 };

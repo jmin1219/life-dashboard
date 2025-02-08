@@ -30,7 +30,7 @@ export default function ModulesLayout({
       </div>
 
       {/* ------------------- RIGHT - MAIN MODULE PAGE ------------------- */}
-      <div className="flex-grow p-4">{children}</div>
+      <div className="flex flex-1 flex-col p-4">{children}</div>
     </div>
   );
 }
