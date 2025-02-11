@@ -1,7 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   TransactionFormType,
-  TransactionType,
   TransactionWithCategoryType,
 } from "../_types/TransactionType";
 
@@ -28,63 +26,12 @@ export const addTransactionAPI = async (transaction: TransactionFormType) => {
 };
 
 // Update a transaction
-export const useUpdateTransaction = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (transaction: TransactionType) => {
-      const res = await fetch(`${API_URL}/${transaction.id}`, {
-        method: "PUT",
-        body: JSON.stringify(transaction),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!res.ok) {
-        const errorMessage = await res.text();
-        throw new Error(`Failed to update transaction: ${errorMessage}`);
-      }
-      return res.json();
-    },
-    onSuccess: (updatedTransaction) => {
-      queryClient.setQueryData(
-        ["transactions"],
-        (oldTransactions: TransactionType[] = []) =>
-          oldTransactions.map((t) =>
-            t.id === updatedTransaction.id ? updatedTransaction : t,
-          ),
-      );
-    },
-    onError: (error) => {
-      console.error("Error updateing transaction", error);
-    },
-  });
-};
 
 // Delete a transaction
-export const useDeleteTransaction = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (id: number) => {
-      const res = await fetch(API_URL, {
-        method: "DELETE",
-        body: JSON.stringify({ id }),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!res.ok) {
-        const errorMessage = await res.text();
-        throw new Error(`Failed to delete transaction: ${errorMessage}`);
-      }
-      return res.json();
-    },
-    onSuccess: (_, id) => {
-      queryClient.setQueryData(
-        ["transactions"],
-        (oldTransactions: TransactionType[] = []) =>
-          oldTransactions.filter((t) => t.id != id),
-      );
-    },
-    onError: (error) => {
-      console.error("Error deleting transaction", error);
-    },
+export const deleteTransactionAPI = async (id: number) => {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
   });
+  if (!res.ok) throw new Error("Failed to delete transaction");
+  return res.json();
 };

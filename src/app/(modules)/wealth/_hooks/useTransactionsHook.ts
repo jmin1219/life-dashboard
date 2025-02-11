@@ -1,5 +1,6 @@
 import {
   addTransactionAPI,
+  deleteTransactionAPI,
   fetchTransactionsAPI,
 } from "../_queries/useTransactionsQuery";
 
@@ -28,10 +29,18 @@ export const useTransactionsHook = () => {
     },
   });
 
+  const deleteTransactionMutation = useMutation({
+    mutationFn: deleteTransactionAPI,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
+  });
+
   return {
     transactions: transactions || [],
     isLoading,
     error,
     addTransaction: addTransactionMutation.mutateAsync,
+    deleteTransaction: deleteTransactionMutation.mutateAsync,
   };
 };
