@@ -32,15 +32,16 @@ const columns: ColumnDef<TransactionWithCategoryType>[] = [
     ),
   },
   {
+    // TODO: Change amounts to color based on transactionTypeColor in utils. And remove transaction type from columns (?)
     accessorKey: "amount",
-    header: () => <div className="text-right font-semibold">AMOUNT</div>,
+    header: () => <div className="text-right">AMOUNT</div>,
     cell: ({ row }) => {
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "KRW",
       }).format(row.getValue("amount"));
 
-      return <div className="text-right font-semibold">{formatted}</div>;
+      return <div className="text-right">{formatted}</div>;
     },
   },
   {
@@ -111,9 +112,13 @@ const TransactionTable = () => {
   if (isLoading) return <p>Loading transactions...</p>;
   if (error) return <p className="text-red-500">Error loading transactions.</p>;
 
+  const sortedTransactions = transactions.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
+
   return (
     <div>
-      <DataTable columns={columns} data={transactions} />
+      <DataTable columns={columns} data={sortedTransactions} />
     </div>
   );
 };
