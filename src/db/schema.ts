@@ -46,7 +46,7 @@ export const transactions = sqliteTable("transactions", {
   date: text("date").notNull(),
 });
 
-export const recurringTransactions = sqliteTable("recurring_transactions", {
+export const scheduledTransactions = sqliteTable("scheduled_transactions", {
   id: integer("id").primaryKey(),
   accountId: integer("account_id")
     .notNull()
@@ -90,6 +90,14 @@ export const budgets = sqliteTable("budgets", {
     .default("monthly")
     .$type<"monthly" | "weekly">(),
   createdAt: text("created_at").notNull(),
+});
+
+export const savingsGoals = sqliteTable("savings_goals", {
+  id: integer("id").primaryKey(),
+  title: text("title"),
+  targetAmount: real("target_amount"),
+  savedAmount: real("saved_amount"),
+  targetDate: text("target_date").notNull(),
 });
 
 export const investments = sqliteTable("investments", {

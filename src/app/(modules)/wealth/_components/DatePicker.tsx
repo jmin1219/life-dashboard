@@ -190,10 +190,11 @@ const DatePicker = () => {
   };
 
   return (
-    <div className="flex items-center justify-center rounded-xl border border-slate-600 p-1">
+    // TODO: Preset values do not switch automatically after first click. The entry is delayed by one click.
+    <div className="flex h-8 items-center justify-center rounded-xl border-t border-slate-600 bg-gray-900 p-0.5">
       <Button
         variant="ghost"
-        className="rounded-l-[8px]"
+        className="h-7 w-7 rounded-l-[7px]"
         onClick={handleBackward}
       >
         <LeftIcon />
@@ -202,7 +203,7 @@ const DatePicker = () => {
         <PopoverTrigger asChild>
           <Button
             variant="ghost"
-            className="text-md overflow-hidden lg:w-[260px]"
+            className="text-md h-7 overflow-hidden lg:w-[260px]"
           >
             <CalendarIcon />
             <span className="hidden lg:block">
@@ -302,7 +303,7 @@ const DatePicker = () => {
       </Popover>
       <Button
         variant="ghost"
-        className="rounded-r-[8px]"
+        className="h-7 w-7 rounded-r-[7px]"
         onClick={handleForward}
       >
         <RightIcon />

@@ -8,9 +8,9 @@ export default function ModulesLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen w-full">
       {/* ------------------- LEFT - MODULE MENU SIDEBAR ------------------- */}
-      <div className="flex min-w-[82px] max-w-[230px] flex-col bg-gradient-to-b from-gray-800 to-gray-900 p-4 text-slate-50 md:w-[8%] lg:w-[22%]">
+      <aside className="fixed left-0 top-0 flex h-screen min-w-[82px] max-w-[230px] flex-col bg-gradient-to-b from-gray-800 to-gray-900 p-4 text-slate-50 lg:w-[22%]">
         <Link
           href="/"
           className="flex items-center justify-center gap-2 rounded-xl p-2 lg:justify-start"
@@ -27,10 +27,12 @@ export default function ModulesLayout({
           </span>
         </Link>
         <MenuSidebar />
-      </div>
+      </aside>
 
       {/* ------------------- RIGHT - MAIN MODULE PAGE ------------------- */}
-      <div className="flex flex-1 flex-col p-4">{children}</div>
+      <main className="ml-[82px] flex flex-1 flex-col overflow-y-auto transition-all lg:ml-[230px]">
+        {children}
+      </main>
     </div>
   );
 }

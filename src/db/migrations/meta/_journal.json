@@ -8,6 +8,13 @@
       "when": 1738817675163,
       "tag": "0000_easy_skrulls",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1739248090863,
+      "tag": "0001_brave_jean_grey",
+      "breakpoints": true
     }
   ]
 }

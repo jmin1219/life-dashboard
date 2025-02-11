@@ -18,24 +18,20 @@ const WealthLayout = ({ children }: { children: React.ReactNode }) => {
     <QueryClientProvider client={queryClient}>
       <div className="flex h-full w-full flex-col text-gray-200">
         {/* HEADER */}
-        <div className="flex flex-col">
+        <div className="flex flex-col p-4 md:flex-row md:items-center md:justify-between">
           {/* Net Worth Summary */}
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col">
-              <h2 className="text-foreground-muted text-md text-gray-500">
-                NET WORTH
-              </h2>
-              <span className="text-2xl font-bold tracking-wide">
-                ₩ (Add Calculation)
-              </span>
-              <span className="text-sm text-gray-500">
-                Updated: (Add today&apos;s date)
-              </span>
-            </div>
-            {/* Wealth Module Navbar */}
-            <div className="">
-              <ModuleNavbar navItems={wealthNavItems} />
-            </div>
+          <div className="flex flex-col">
+            <h2 className="text-foreground-muted text-sm font-semibold text-gray-500">
+              NET WORTH
+            </h2>
+            <span className="text-xl font-bold">₩ (Add Calculation)</span>
+            <span className="text-sm text-gray-500">
+              Updated: (Add today&apos;s date)
+            </span>
+          </div>
+          {/* Wealth Module Navbar */}
+          <div className="mt-3 md:mt-0">
+            <ModuleNavbar navItems={wealthNavItems} />
           </div>
         </div>
 

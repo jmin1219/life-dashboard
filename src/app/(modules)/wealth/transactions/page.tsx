@@ -1,7 +1,6 @@
 "use client";
 
 import DatePicker from "../_components/DatePicker";
-import { Separator } from "@/components/ui/separator";
 import TransactionBarChart from "../_components/TransactionBarChart";
 import TransactionTable from "../_components/TransactionTable";
 import TransactionPieCharts from "../_components/TransactionPieChart";
@@ -22,36 +21,38 @@ const TransactionsTab = () => {
     .reduce((sum, tx) => sum + tx.amount, 0);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col px-3">
       {/* ------------------------ ROW 1 - DATE PICKER, & ADD TRANSACTION BUTTON ------------------------ */}
-      <div className="mx-[8%] my-3 flex justify-between">
+      <div className="mx-[5%] mb-2 flex justify-between">
         <DatePicker />
         <AddTransactionModal />
       </div>
-      <Separator className="my-2" />
       {/* ------------------------ ROW 2 - FILTERS ------------------------ */}
-      <div className="">
+      <div className="mb-2 flex justify-center">
         <FiltersMenu />
       </div>
-      <Separator className="my-2" />
       {/* ------------------------ ROW 3 - BAR CHART ------------------------ */}
-      <TransactionBarChart transactions={transactions} />
-      <Separator className="my-2" />
+      <div className="mb-3 rounded-xl border-t border-slate-600 bg-gray-900">
+        <TransactionBarChart transactions={transactions} />
+      </div>
       {/* ------------------------ ROW 4 - TABLE & PIE CHART ------------------------ */}
-      <div className="flex flex-col lg:flex-row">
-        {/* TRANSACTION PIE CHARTS */}
-        <div className="flex h-auto w-1/4 flex-col">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+        {/* LEFT: TRANSACTION PIE CHARTS */}
+        <div className="flex flex-col rounded-xl border-t border-slate-600 bg-gray-900 p-2">
+          {/* Total Stats */}
           <div className="flex justify-between">
+            {/* Total Expenses */}
             <div className="flex flex-col">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm font-semibold text-muted-foreground">
                 TOTAL EXPENSES
               </span>
               <span className="text-right text-xl font-semibold">
                 ₩ {totalExpenses.toLocaleString()}
               </span>
             </div>
+            {/* Total Income */}
             <div className="flex flex-col">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm font-semibold text-muted-foreground">
                 TOTAL INCOME
               </span>
               <span className="text-right text-xl font-semibold">
@@ -59,11 +60,11 @@ const TransactionsTab = () => {
               </span>
             </div>
           </div>
+          {/* Charts */}
           <TransactionPieCharts transactions={transactions} />
         </div>
-        <Separator orientation="vertical" className="mx-2" />
-        {/* TRANSACTION TABLE */}
-        <div className="w-3/4 flex-grow flex-col">
+        {/* RIGHT: TRANSACTION TABLE */}
+        <div className="col-span-3 flex flex-col rounded-xl border-t border-slate-600 bg-gray-900 p-2">
           <div className="overflow-y-auto">
             {isLoading ? (
               <p className="text-center">Loading Transactions...</p>
