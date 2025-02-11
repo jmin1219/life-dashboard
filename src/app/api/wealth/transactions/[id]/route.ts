@@ -3,7 +3,6 @@ import { transactions } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
-
 // Delete a Transaction
 export async function DELETE(req: NextRequest) {
   try {
