@@ -29,7 +29,8 @@ export interface TransactionWithCategoryType extends TransactionType {
   category_icon: string;
 }
 
-export interface TransactionFormType {
+export interface AddTransactionFormType {
+  id?: number | null;
   date: string; // use ISO string format (YYYY-MM-DD)
   amount: number;
   accountId: number | null;

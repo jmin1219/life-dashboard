@@ -1,6 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Pencil } from "lucide-react";
+
 import {
   Dialog,
   DialogContent,
@@ -12,7 +14,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { CirclePlus as AddIcon } from "lucide-react";
 import { useState } from "react";
 import {
   Popover,
@@ -34,32 +35,40 @@ import { useToast } from "@/hooks/use-toast";
 import { useTransactionsHook } from "../_hooks/useTransactionsHook";
 import { CategoryType } from "../_types/CategoryType";
 import { useFetchCategories } from "../_hooks/useCategoriesHook";
-import { AddTransactionFormType } from "../_types/TransactionType";
+import {
+  AddTransactionFormType,
+  TransactionWithCategoryType,
+} from "../_types/TransactionType";
 import { useFetchAccounts } from "../_hooks/useAccountsHooks";
 
-const AddTransactionModal = () => {
+const EditTransactionModal = ({
+  transaction,
+}: {
+  transaction: TransactionWithCategoryType;
+}) => {
   const { toast } = useToast();
 
-  const { addTransaction } = useTransactionsHook();
+  const { editTransaction } = useTransactionsHook();
   const { data: categories = [], isLoading: isCategoryLoading } =
     useFetchCategories();
   const { data: accounts = [], isLoading: isAccountLoading } =
     useFetchAccounts();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [showDatePopover, setShowDatePopover] = useState(false);
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const [form, setForm] = useState<AddTransactionFormType>({
-    date: new Date().toISOString().split("T")[0],
-    amount: 0,
-    accountId: null,
-    categoryId: null,
-    title: "",
-    description: "",
-    necessity: "optional",
-    type: "expense",
+    id: transaction?.id ?? null,
+    date: transaction?.date ?? new Date().toISOString().split("T")[0], // Default to today's date
+    amount: transaction?.amount ?? 0, // Default to 0
+    accountId: transaction?.accountId ?? null,
+    categoryId: transaction?.categoryId ?? null,
+    title: transaction?.title ?? "", // Default to empty string
+    description: transaction?.description ?? "",
+    necessity: transaction?.necessity ?? "optional", // Default necessity
+    type: transaction?.type ?? "expense", // Default type
   });
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
@@ -105,14 +114,15 @@ const AddTransactionModal = () => {
     setIsLoading(true);
 
     try {
-      await addTransaction(form);
+      await editTransaction(form);
 
       toast({
-        title: "Transaction Added!",
-        description: "Your transaction has been successfully added.",
+        title: "Transaction Updated!",
+        description: "Your transaction has been successfully updated.",
       });
 
       setForm({
+        id: null,
         date: new Date().toISOString().split("T")[0],
         amount: 0,
         accountId: null,
@@ -127,10 +137,10 @@ const AddTransactionModal = () => {
         setIsModalOpen(false);
       }
     } catch (error) {
-      console.error("Error adding transaction:", error);
+      console.error("Error updating transaction:", error);
       toast({
         title: "Error",
-        description: "Failed to add the transaction. Please try again.",
+        description: "Failed to update the transaction. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -141,21 +151,18 @@ const AddTransactionModal = () => {
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
-        <div className="flex h-8 items-center justify-center rounded-xl border-t border-slate-600 bg-gray-900 p-1">
-          <Button variant="ghost" className="text-md h-7 rounded-[8px]">
-            <AddIcon />
-            <span className="hidden lg:block">Add Transaction</span>
-          </Button>
+        <div className="rounded-xl p-3 hover:bg-blue-600 hover:bg-opacity-50">
+          <Pencil className="h-4 w-4 text-gray-400" />
         </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>New Transaction</DialogTitle>
+          <DialogTitle>Edit Transaction</DialogTitle>
           <DialogDescription>
-            Enter transaction details below.
+            Update transaction details below.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4">
+        <div className="grid gap-4 py-4">
           {/* Date */}
           <div className="grid grid-cols-4 items-center gap-x-4">
             <Label htmlFor="date" className="text-right">
@@ -188,7 +195,6 @@ const AddTransactionModal = () => {
             <Label htmlFor="title" className="text-right">
               Title
             </Label>
-
             <Input
               id="title"
               value={form.title}
@@ -405,18 +411,6 @@ const AddTransactionModal = () => {
         <DialogFooter>
           <Button
             type="submit"
-            variant="secondary"
-            onClick={() => handleSubmit(true)}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <span className="loader"></span>
-            ) : (
-              "Save & Add Another"
-            )}
-          </Button>
-          <Button
-            type="submit"
             onClick={() => handleSubmit(false)}
             disabled={isLoading}
           >
@@ -437,4 +431,4 @@ const AddTransactionModal = () => {
   );
 };
 
-export default AddTransactionModal;
+export default EditTransactionModal;

@@ -6,8 +6,7 @@ import { TransactionWithCategoryType } from "../_types/TransactionType";
 import { ColumnDef } from "@tanstack/react-table";
 import DataTable from "@/components/DataTable";
 import { toTitleCase } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,6 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import EditTransactionModal from "./EditTransactionModal";
 
 const typeColor = (type: string) => {
   switch (type) {
@@ -114,13 +114,12 @@ const TransactionTable = () => {
       id: "actions",
       header: "",
       cell: ({ row }) => {
-        const transactionId = row.original.id;
+        const transaction = row.original;
         return (
           <div className="flex items-center justify-center gap-1">
             {/* EDIT BUTTON */}
-            <Button variant="ghost" size="icon" className="rounded-xl">
-              <Pencil className="h-2 w-2 text-gray-400" />
-            </Button>
+            <EditTransactionModal transaction={transaction} />
+
             {/* DELETE BUTTON */}
             <AlertDialog>
               <AlertDialogTrigger>
@@ -141,7 +140,8 @@ const TransactionTable = () => {
                   <AlertDialogAction
                     className="bg-red-600 text-white hover:bg-red-800 hover:text-black"
                     onClick={() =>
-                      transactionId !== undefined && handleDelete(transactionId)
+                      transaction.id !== undefined &&
+                      handleDelete(transaction.id)
                     }
                   >
                     Continue

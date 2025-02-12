@@ -89,8 +89,7 @@ const AddCategoryModal = ({
   return (
     <Dialog
       open={open}
-      onOpenChange={(isOpen) => {
-        console.log("AddCategoryModal State:", isOpen);
+      onOpenChange={() => {
         onClose();
       }}
     >

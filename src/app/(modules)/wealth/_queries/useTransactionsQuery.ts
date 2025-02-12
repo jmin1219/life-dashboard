@@ -1,5 +1,5 @@
 import {
-  TransactionFormType,
+  AddTransactionFormType,
   TransactionWithCategoryType,
 } from "../_types/TransactionType";
 
@@ -15,7 +15,9 @@ export const fetchTransactionsAPI = async (): Promise<
 };
 
 // Add a transaction
-export const addTransactionAPI = async (transaction: TransactionFormType) => {
+export const addTransactionAPI = async (
+  transaction: AddTransactionFormType,
+) => {
   const res = await fetch(API_URL, {
     method: "POST",
     body: JSON.stringify(transaction),
@@ -26,6 +28,17 @@ export const addTransactionAPI = async (transaction: TransactionFormType) => {
 };
 
 // Update a transaction
+export const editTransactionAPI = async (
+  transaction: AddTransactionFormType,
+) => {
+  const res = await fetch(`${API_URL}/${transaction.id}`, {
+    method: "PUT",
+    body: JSON.stringify(transaction),
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!res.ok) throw new Error("Failed to update transaction");
+  return res.json();
+};
 
 // Delete a transaction
 export const deleteTransactionAPI = async (id: number) => {

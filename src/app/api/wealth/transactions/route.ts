@@ -14,9 +14,11 @@ export async function GET() {
         amount: transactions.amount,
         type: transactions.type,
         necessity: transactions.necessity,
+        accountId: transactions.accountId,
         category_name: categories.name,
         category_color: categories.color,
         category_icon: categories.icon,
+        categoryId: transactions.categoryId,
       })
       .from(transactions)
       .leftJoin(categories, eq(transactions.categoryId, categories.id));
