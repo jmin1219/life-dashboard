@@ -36,6 +36,7 @@ import { CategoryType } from "../_types/CategoryType";
 import { useFetchCategories } from "../_hooks/useCategoriesHook";
 import { AddTransactionFormType } from "../_types/TransactionType";
 import { useFetchAccounts } from "../_hooks/useAccountsHooks";
+import { IconRenderer } from "@/components/IconPicker/icon-picker";
 
 const AddTransactionModal = () => {
   const { toast } = useToast();
@@ -335,11 +336,11 @@ const AddTransactionModal = () => {
               <SelectContent>
                 {categories.map((category) => (
                   <SelectItem key={category.id} value={category.id.toString()}>
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="h-4 w-4 rounded-full"
-                        style={{ backgroundColor: category.color }}
-                      ></div>
+                    <div
+                      className="flex items-center gap-2 rounded-xl px-2 py-0.5"
+                      style={{ backgroundColor: category.color }}
+                    >
+                      <IconRenderer icon={category.icon} className="size-5" />
                       {category.name}
                     </div>
                   </SelectItem>

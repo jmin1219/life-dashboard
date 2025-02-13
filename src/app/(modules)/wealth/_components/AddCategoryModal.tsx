@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import IconPickerDialog from "@/components/IconPicker/IconPickerDialog";
 
 const AddCategoryModal = ({
   open,
@@ -46,25 +47,26 @@ const AddCategoryModal = ({
     type: "",
   });
 
-  const handleSubmit = async () => {
-    if (form.name.trim() === "") {
-      toast({
-        title: "Error",
-        description: "Category name is required.",
-        variant: "destructive",
-      });
-      return;
-    }
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    if (!form.name.trim()) newErrors.name = "Category name is required.";
     if (
       categories.some((c) => c.name.toLowerCase() === form.name.toLowerCase())
-    ) {
-      toast({
-        title: "Error",
-        description: "Category already exists.",
-        variant: "destructive",
-      });
-      return;
-    }
+    )
+      newErrors.name = "A category with the same name already exists.";
+    if (!form.icon || form.icon === "")
+      newErrors.icon = "Please select an icon.";
+    if (!form.type) newErrors.type = "Please select a category type.";
+
+    setFormErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+
     try {
       const newCategory = await addCategoryMutation.mutateAsync(form);
       onCategoryAdded(newCategory);
@@ -103,19 +105,33 @@ const AddCategoryModal = ({
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-x-4">
             <Label htmlFor="name" className="text-right font-medium">
               Name
             </Label>
-            <Input
-              id="name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="col-span-3"
-              placeholder="Category Name"
-            />
+            <div className="col-span-3 flex gap-3">
+              <Input
+                id="name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Category Name"
+              />
+              <IconPickerDialog
+                onChange={(icon) => setForm({ ...form, icon })}
+              />
+            </div>
+            {formErrors.name && (
+              <p className="col-span-3 col-start-2 text-sm text-red-500">
+                {formErrors.name}
+              </p>
+            )}
+            {formErrors.icon && (
+              <p className="col-span-3 col-start-2 text-sm text-red-500">
+                {formErrors.icon}
+              </p>
+            )}
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-x-4">
             <Label htmlFor="type" className="text-right font-medium">
               Type
             </Label>
@@ -135,20 +151,15 @@ const AddCategoryModal = ({
                 <SelectItem value="expense">Expense</SelectItem>
                 <SelectItem value="income">Income</SelectItem>
               </SelectContent>
+              {formErrors.type && (
+                <p className="col-span-3 col-start-2 text-sm text-red-500">
+                  {formErrors.type}
+                </p>
+              )}
             </Select>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="icon" className="text-right font-medium">
-              Icon
-            </Label>
-            <Input
-              id="icon"
-              value={form.icon}
-              onChange={(e) => setForm({ ...form, icon: e.target.value })}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+
+          <div className="grid grid-cols-4 items-center gap-x-4">
             <Label htmlFor="color" className="text-right font-medium">
               Color
             </Label>

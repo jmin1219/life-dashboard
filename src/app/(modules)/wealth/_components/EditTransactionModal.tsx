@@ -40,6 +40,7 @@ import {
   TransactionWithCategoryType,
 } from "../_types/TransactionType";
 import { useFetchAccounts } from "../_hooks/useAccountsHooks";
+import { IconRenderer } from "@/components/IconPicker/icon-picker";
 
 const EditTransactionModal = ({
   transaction,
@@ -341,11 +342,12 @@ const EditTransactionModal = ({
               <SelectContent>
                 {categories.map((category) => (
                   <SelectItem key={category.id} value={category.id.toString()}>
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="h-4 w-4 rounded-full"
-                        style={{ backgroundColor: category.color }}
-                      ></div>
+                    <div className="flex items-center gap-2">
+                      <IconRenderer
+                        icon={category.icon}
+                        className="size-5"
+                        style={{ color: `${category.color}` }}
+                      />
                       {category.name}
                     </div>
                   </SelectItem>
