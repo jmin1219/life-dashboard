@@ -27,6 +27,11 @@ import {
 } from "@/components/ui/select";
 import IconPickerDialog from "@/components/IconPicker/IconPickerDialog";
 
+// TODO: Change icon set to allow more options related to categories
+// TODO: Filter out already used icons from the icons list
+// TODO: Maybe just use preset colors for color picker
+// TODO: Filter categories based on type and the category's type
+
 const AddCategoryModal = ({
   open,
   onClose,

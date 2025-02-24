@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { Metadata } from "next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,6 +12,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const metadata: Metadata = {
+  title: "Life Dashboard AI",
+  description: "Be mindful of your enery, time, and money.",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Life Dashboard</title>
+        <title>Life Dashboard AI</title>
         <meta
           name="description"
           content="Be mindful of your energy, time, and money."
